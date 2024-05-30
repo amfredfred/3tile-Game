@@ -1,0 +1,263 @@
+@import './base.css';
+
+@font-face {
+  font-family: 'Kanit';
+  src: url('./fonts/Kanit-ExtraBold.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+
+.neon-text-flicker {
+  animation: flicker 1.5s infinite alternate;
+}
+
+
+
+/* Flickeneon-apply animation */
+@keyframes flicker {
+
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+
+    text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px #0fa,
+      0 0 80px #0fa,
+      0 0 90px #0fa,
+      0 0 100px #0fa,
+      0 0 150px #0fa;
+
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+@-webkit-keyframes flicker {
+
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+
+    text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px #0fa,
+      0 0 80px #0fa,
+      0 0 90px #0fa,
+      0 0 100px #0fa,
+      0 0 150px #0fa;
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+
+:root {
+  --kanit: 'Kanit', sans-serif;
+  --danger: red
+}
+
+.danger {
+  color: var(--danger);
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  font-weight: normal;
+  display: flex;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+.icon {
+  width: 30px;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {}
+
+
+
+
+.neon-red {
+  --neon: #FF5161 ;
+  --neon-glow: #D30302 ;
+}
+
+.neon-pink {
+  --neon: #FF53cd ;
+  --neon-glow: #e10361 ;
+}
+
+.neon-purple {
+  --neon: #9461fd ;
+  --neon-glow: #4003e6 ;
+}
+
+.neon-blue {
+  --neon: #2dd9fe ;
+  --neon-glow: #00a3d5 ;
+}
+
+.neon-green {
+  --neon: #00fe9b ;
+  --neon-glow: #02c435 ;
+}
+
+.neon-yellow {
+  --neon: #ffdb4e ;
+  --neon-glow: #b48505 ;
+}
+
+.neon-white {
+  --neon: #fefefe ;
+  --neon-glow: #ffffff ;
+}
+
+@supports (background: color(display-p3 1 1 1)) {
+  @media (dynamic-range: high) {
+    .neon-red {
+      --neon-glow: color(display-p3 1 0 0);
+    }
+
+    .neon-pink {
+      --neon-glow: color(display-p3 1 0 1);
+    }
+
+    .neon-purple {
+      --neon-glow: color(display-p3 0 0 1);
+    }
+
+    .neon-blue {
+      --neon-glow: color(display-p3 0 1 1);
+    }
+
+    .neon-green {
+      --neon-glow: color(display-p3 0 1 0);
+    }
+
+    .neon-yellow {
+      --neon-glow: color(display-p3 1 1 0);
+    }
+
+    .neon-white {
+      --neon-glow: color(display-p3 1 1 1);
+    }
+  }
+}
+
+
+.neon-apply{
+    border: 5px solid var(--neon);
+      box-shadow:
+        0 0 50px var(--neon-glow),
+        inset 0 0 50px var(--neon-glow);
+}
+
+
+/* .neon-apply::after,
+.neon-apply::before {
+  content: ' ';
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  bottom: -60px;
+  border-radius: 5px;
+  background: var(--neon);
+  box-shadow: 0 0 25px 2.5px var(--neon-glow);
+} */
+
+
+@keyframes glow-animation {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes rotating_animation {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+
+/* Power String */
+
+.power_string{
+  position:relative
+}
+
+.power_string::after,
+.power_string::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: 100%;
+    height: 5px;
+    background: rgb(0, 242, 255);
+    border-radius: 0 0 15px 15px;
+    animation: power_string 3s infinite both;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+@keyframes power_string {
+
+    0%,
+    100% {
+        width: 100%;
+    }
+
+    10%,
+    90% {
+        width: 300px;
+    }
+
+    50% {
+        width: 50%;
+    }
+}
