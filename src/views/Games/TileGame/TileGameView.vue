@@ -1,8 +1,6 @@
 <template>
     <div class="convas_container">
-        <explossive-countdown v-if="sessionData.timeLestBeforeContinue"
-            :countdown="sessionData.timeLestBeforeContinue" />
-
+        <explossive-countdown v-if="sessionData.timeLestBeforeContinue"  :countdown="sessionData.timeLestBeforeContinue" />
         <div class="tiles_container" ref="scene_container" @click="handleContainerClick">
             <div :class="['total-points-to-earn']">
                 <img class="icon" :src="coinIcon" alt="Coin Icon">

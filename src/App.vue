@@ -2,7 +2,6 @@
 import { RouterView, } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore';
 import { onMounted } from 'vue';
-import { Telegram } from 'telegram-web-app';
 import Toast from 'primevue/toast';
 
 const _store = useMainStore()
@@ -10,7 +9,7 @@ const _store = useMainStore()
 onMounted(() => {
 
 
-  (window.Telegram as Telegram) = {
+  ((window as any).Telegram) = {
     WebApp: {
       initDataUnsafe: {
         user: {

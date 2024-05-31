@@ -34,7 +34,7 @@ export interface TileSessionData {
     timeLestBeforeContinue: number;
     invalidTapCount: number;
     isContinueAccested: boolean;
-    countdownInterval?: number;
+    countdownInterval?: instanceOf setIntervals;
     countdownTimeout?: number;
 }
 
