@@ -1,9 +1,7 @@
 <template>
     <div class="layout">
-        <!-- <heading-panel /> -->
         <slot name="content" />
         <Toast />
-        <!-- <footing-panel /> -->
     </div>
 </template>
 

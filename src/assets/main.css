@@ -13,6 +13,24 @@
 }
 
 
+.balance-section {
+  width: 100%;
+  border-radius: 10px;
+  padding: .5rem;
+  overflow: hidden;
+}
+
+.balance-section h1 {
+  color: white;
+  font-weight: 800;
+  font-size: 1.4em;
+}
+
+.balance-section .small-text {
+  color: grey;
+  font-size: small;
+}
+
 
 /* Flickeneon-apply animation */
 @keyframes flicker {
@@ -72,6 +90,28 @@
   }
 }
 
+.game-style-outline {
+  position: relative;
+  overflow: hidden;
+
+  background-color: var(--neon);
+  transition: transform 0.3s;
+}
+
+
+/* .game-style-outline::after {
+display: inline-block;
+  margin-top: 1rem;
+  background-color: #007BFF;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 0;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+} */
+
 
 :root {
   --kanit: 'Kanit', sans-serif;
@@ -115,38 +155,38 @@ a,
 
 
 .neon-red {
-  --neon: #FF5161 ;
-  --neon-glow: #D30302 ;
+  --neon: #FF5161;
+  --neon-glow: #D30302;
 }
 
 .neon-pink {
-  --neon: #FF53cd ;
-  --neon-glow: #e10361 ;
+  --neon: #FF53cd;
+  --neon-glow: #e10361;
 }
 
 .neon-purple {
-  --neon: #9461fd ;
-  --neon-glow: #4003e6 ;
+  --neon: #9461fd;
+  --neon-glow: #4003e6;
 }
 
 .neon-blue {
-  --neon: #2dd9fe ;
-  --neon-glow: #00a3d5 ;
+  --neon: #2dd9fe;
+  --neon-glow: #00a3d5;
 }
 
 .neon-green {
-  --neon: #00fe9b ;
-  --neon-glow: #02c435 ;
+  --neon: #00fe9b;
+  --neon-glow: #02c435;
 }
 
 .neon-yellow {
-  --neon: #ffdb4e ;
-  --neon-glow: #b48505 ;
+  --neon: #ffdb4e;
+  --neon-glow: #b48505;
 }
 
 .neon-white {
-  --neon: #fefefe ;
-  --neon-glow: #ffffff ;
+  --neon: #fefefe;
+  --neon-glow: #ffffff;
 }
 
 @supports (background: color(display-p3 1 1 1)) {
@@ -182,11 +222,11 @@ a,
 }
 
 
-.neon-apply{
-    border: 5px solid var(--neon);
-      box-shadow:
-        0 0 50px var(--neon-glow),
-        inset 0 0 50px var(--neon-glow);
+.neon-apply {
+  border: 5px solid var(--neon);
+  box-shadow:
+    0 0 50px var(--neon-glow),
+    inset 0 0 50px var(--neon-glow);
 }
 
 
@@ -226,38 +266,38 @@ a,
 
 /* Power String */
 
-.power_string{
-  position:relative
+.power_string {
+  position: relative
 }
 
 .power_string::after,
 .power_string::after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 50%;
-    width: 100%;
-    height: 5px;
-    background: rgb(0, 242, 255);
-    border-radius: 0 0 15px 15px;
-    animation: power_string 3s infinite both;
-    transform: translateX(-50%);
-    z-index: 2;
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 100%;
+  height: 5px;
+  background: rgb(0, 242, 255);
+  border-radius: 0 0 15px 15px;
+  animation: power_string 3s infinite both;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
 @keyframes power_string {
 
-    0%,
-    100% {
-        width: 100%;
-    }
+  0%,
+  100% {
+    width: 100%;
+  }
 
-    10%,
-    90% {
-        width: 300px;
-    }
+  10%,
+  90% {
+    width: 300px;
+  }
 
-    50% {
-        width: 50%;
-    }
+  50% {
+    width: 50%;
+  }
 }

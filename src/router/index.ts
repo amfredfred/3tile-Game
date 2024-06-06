@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore'
 import TileGameView from '@/views/Games/TileGame/TileGameView.vue'
+import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
 import HomeView from '@/views/HomeView.vue'
 
 const router = createRouter({
@@ -18,6 +19,14 @@ const router = createRouter({
       path: '/3tile-game',
       name: '3tile-game-page',
       component: TileGameView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    {
+      path: '/rush-dot-game',
+      name: 'rush-dot-game-page',
+      component: RushDotgameView,
       meta: {
         requires_auth: true
       }

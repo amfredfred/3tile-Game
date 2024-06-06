@@ -15,7 +15,7 @@ const wsocket = (path?: string) => {
     let reconnectInterval: ReturnType<typeof setInterval>;
     let reconnectAttempts = 0;
 
-    const xtelegramid = initialState.user.id
+    const xtelegramid = initialState?.user?.id
 
     const connect = () => {
 

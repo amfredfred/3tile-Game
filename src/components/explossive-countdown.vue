@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-// Define props
 const props = defineProps({
     countdown: {
         type: Number,
@@ -21,16 +20,11 @@ const props = defineProps({
     }
 });
 
-// Reactive key to trigger re-rendering
 const motionKey = ref(0);
-
-// Watch for changes in countdown and update the key to trigger animation
 watch(() => props.countdown, () => {
     motionKey.value++;
 });
 </script>
-
-
 
 <style scoped>
 .countdown-container {

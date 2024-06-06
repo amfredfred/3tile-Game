@@ -16,11 +16,13 @@
   "dependencies": {
     "@types/telegram-web-app": "^7.2.1",
     "@vueuse/motion": "^2.1.0",
+    "dayjs": "^1.11.11",
     "pinia": "^2.1.7",
     "primeicons": "^7.0.0",
     "primevue": "^3.52.0",
     "vue": "^3.4.21",
     "vue-confetti": "^2.3.0",
+    "vue-confetti-explosion": "^1.0.2",
     "vue-number-animation": "^2.0.2",
     "vue-router": "^4.3.0",
     "vuetify": "^3.6.7"

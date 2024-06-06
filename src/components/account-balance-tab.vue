@@ -1,17 +1,21 @@
 <template>
-    <section class="balance-section">
+    <section class="balance-section account-bal-section">
         <h1>Overview</h1>
         <p class="small-text">Yeeh, you are progressive. Please review the information below. 🌟</p>
-
         <div class="balance-container">
-            <div class="flex-container" style="width: 100%;">
-                <v-button class="balance-display-button" style="flex-grow: 1;">
-                    <h1>$<v-number :from="0" :to="(0).toFixed(2)" /></h1>
+            <div class="flex-container game-style-outline" style="width: 100%;">
+                <v-button class="balance-display-button " style="flex-grow: 1;">
+                    <earned-points-tab :points="4" />
                     <div class="flex-container" style="margin-left: auto; flex-grow: 0;">
                         <strong>CONNECT</strong>
                         <img :src="TONcon" class="icon">
                     </div>
                 </v-button>
+            </div>
+            <div class="flex-container " style="width: 100%; flex-wrap: wrap;gap: 1rem;margin-top: auto;">
+                <farming-button />
+                <frens-button />
+                <boost-button />
             </div>
         </div>
     </section>
@@ -22,23 +26,6 @@ import TONcon from '@/assets/icons/ton-icon.png'
 </script>
 
 <style scoped>
-.balance-section {
-    width: 100%;
-    border-radius: 10px;
-    padding: .5rem;
-}
-
-.balance-section h1 {
-    color: white;
-    font-weight: 800;
-    font-size: 1.4em;
-}
-
-.balance-section .small-text {
-    color: grey;
-    font-size: small;
-}
-
 .balance-display-button {
     background: var(--vt-c-black);
     border: none;
@@ -49,6 +36,9 @@ import TONcon from '@/assets/icons/ton-icon.png'
     padding: 1rem;
 }
 
+.account-bal-section {
+    flex-grow: 1;
+}
 
 .balance-container {
     width: 100%;
@@ -57,6 +47,7 @@ import TONcon from '@/assets/icons/ton-icon.png'
     flex-direction: column;
     align-items: flex-start;
     position: relative;
+    gap: 1rem;
 }
 
 .flex-container {

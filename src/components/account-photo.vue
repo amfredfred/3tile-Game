@@ -18,7 +18,6 @@ import LogoPointsSpeak from '@/assets/logo-points-speak.jpg'
     border-radius: 50px;
 }
 
-
 .avatar-container a {
     width: 100%;
     height: 100%;

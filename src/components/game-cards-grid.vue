@@ -1,8 +1,5 @@
 <template>
-    <div class="game-cards-container ">
-        <div class="game-cards-heading power_string">
-            <earned-points-tab :points="4" />
-        </div>
+    <div class="game-cards-container "> 
         <div :key="item.name" v-for="item in items" class="game-card-item">
             <img class="game-card-photo" :src="item.photo" alt="">
             <span class="game-card-name neon-text-flicker ">{{ item.name }}</span>
@@ -15,15 +12,19 @@
 
 <script setup lang="ts">
 import TileGamePhoto from '@/uploads/photos/3tile-game-photot.jpg'
+import RushDotGamePhoto from '@/uploads/photos/blue-triangles.jpg'
 import { RouterLink } from 'vue-router';
 
 interface IGameCardItem {
     name: string,
     photo: string,
-    path:string
+    path: string
 }
 
-const items = Array.from({ length: 1 }).fill({ name: '3Tile', photo: TileGamePhoto, path:'3tile-game' }) as IGameCardItem[]
+const items: IGameCardItem[] = [
+    { name: '3Tile', photo: TileGamePhoto, path: '3tile-game' },
+    { name: 'Rush Dot', photo: RushDotGamePhoto, path: 'rush-dot-game' }
+]
 </script>
 
 <style coped>
@@ -90,7 +91,7 @@ const items = Array.from({ length: 1 }).fill({ name: '3Tile', photo: TileGamePho
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(100% - .5rem);
+    width: calc(50% - .5rem);
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -122,20 +123,5 @@ const items = Array.from({ length: 1 }).fill({ name: '3Tile', photo: TileGamePho
     width: 100%;
     height: 100%;
     top: 10%;
-}
-
-.game-cards-heading {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.game-cards-heading h3 {
-    font-weight: 900
-}
+} 
 </style>

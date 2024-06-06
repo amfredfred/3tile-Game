@@ -34,7 +34,7 @@ export interface TileSessionData {
     timeLestBeforeContinue: number;
     invalidTapCount: number;
     isContinueAccested: boolean;
-    countdownInterval?: instanceOf setIntervals;
+    countdownInterval?: number | NodeJS.Timeout;
     countdownTimeout?: number;
 }
 

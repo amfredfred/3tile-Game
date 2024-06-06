@@ -28,6 +28,10 @@ import AccountBalanceTab from '@/components/account-balance-tab.vue'
 import Skeleton from 'primevue/skeleton'
 import NumberAnimation from "vue-number-animation";
 import GameCardsGrid from './components/game-cards-grid.vue'
+import FarmingButton from '@/components/farming-button.vue'
+import FrensButton from '@/components/frens-button.vue'
+import BoostButton from '@/components/boost-button.vue'
+import ConfettiExplosion from "vue-confetti-explosion";
 
 const app = createApp(App)
 
@@ -56,10 +60,15 @@ app.component('heading-panel', HeadingPanel)
 app.component('footing-panel', FootingPanel)
 app.component('account-balance-tab', AccountBalanceTab)
 app.component('game-cards-grid', GameCardsGrid)
+app.component('farming-button', FarmingButton)
+app.component('frens-button', FrensButton)
+app.component('boost-button', BoostButton)
 
 app.component('v-skeleton', Skeleton)
 app.component('v-button', Button)
 app.component('v-number', NumberAnimation)
+
+app.component('v-confetti', ConfettiExplosion)
 
 
 app.mount('#app')
