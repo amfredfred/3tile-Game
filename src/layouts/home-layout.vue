@@ -1,39 +1,18 @@
 <template>
     <div class="layout">
-        <slot name="content" />
+        <!-- <heading-panel /> -->
+        <vue-particles id="tsparticles" class="particles" :options="ParticleConst" />
+        <div class="container-main">
+            <slot name="content" />
+        </div>
+        <footing-panel />
         <Toast />
     </div>
 </template>
 
 <script setup lang="ts">
-import { wsocket } from '@/configs/wsocket';
 import Toast from 'primevue/toast';
-
-import { onBeforeMount } from 'vue';
-import { useMainStore } from '@/stores/mainstore';
-const _store = useMainStore()
-
-onBeforeMount(() => {
-    const socket = wsocket('');
-    const instance = socket.instance;
-    if (instance && instance.onopen) {
-        instance.onopen = () => {
-            socket.send('overview');
-        };
-        instance.onmessage = (messageEvent) => {
-            const message = messageEvent.data;
-            try {
-                const data = JSON.parse(message);
-                if (data?.overview) {
-                    _store.setAccountOverview(data.overview);
-                }
-            } catch (error) {
-                // console.error('Error decoding WebSocket message:', error);
-            }
-        };
-    }
-});
-
+import { ParticleConst } from '@/configs/particles-options';  
 </script>
 
 <style scoped>
@@ -43,5 +22,23 @@ onBeforeMount(() => {
     width: 100%;
     height: 100dvh;
     overflow: hidden;
+    background: rgb(9, 9, 11);
+    position: relative;
+    isolation: isolate;
+}
+
+.container-main {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.particles {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: -2;
 }
 </style>

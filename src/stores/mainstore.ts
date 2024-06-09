@@ -1,5 +1,7 @@
 'use strict';
 
+import type { IFarmingEra } from '@/interfaces/IFarmingEra';
+import type { ITriviaSession } from '@/interfaces/ITrivia';
 import { defineStore } from 'pinia';
 
 enum LocalStorageKeys {
@@ -26,7 +28,9 @@ interface IState {
 
     overview?: {
         totalScore: number | null
-    }
+    },
+    triviaSession?: ITriviaSession
+    farmingEra?: IFarmingEra | null
 }
 
 const getLocalStorageItem = <K extends LocalStorageKeys>(key: K): LocalStorageValues[K] | null => {
@@ -48,7 +52,8 @@ const initialState: IState = {
 
     overview: {
         totalScore: null
-    }
+    },
+    farmingEra: null
 };
 
 export const useMainStore = defineStore({
@@ -76,6 +81,12 @@ export const useMainStore = defineStore({
         },
         setAccountOverview(accountOverview: IState['overview']) {
             this.overview = accountOverview
+        },
+        setTriviaSession(triviaSession: ITriviaSession) {
+            this.triviaSession = triviaSession
+        },
+        setFarmingEra(farmingEra: IFarmingEra) {
+            this.farmingEra = farmingEra
         }
     },
 });

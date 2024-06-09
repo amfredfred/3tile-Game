@@ -8,7 +8,7 @@
             <account-name />
             <!-- <account-name /> -->
             <div class="items-right">
-                <earned-points-tab :points="4" />
+                <points-modal :points="4" />
             </div>
         </div>
     </nav>

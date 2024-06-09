@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView, } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Toast from 'primevue/toast';
 
 const _store = useMainStore()
@@ -26,15 +26,27 @@ onMounted(() => {
     id: 6033850568
   })
 
+  webSocketStore.initializeWebSocket().then(() => {
+    isWebSocketConnected.value = true;
+  }).catch((error) => {
+    console.error('Failed to initialize WebSocket:', error);
+    // Handle the error accordingly, e.g., show an error message to the user
+  });
 })
 
+import WebSocketDialog from '@/OutsideBox/WebSocketDialog.vue';
+import { useWebSocketStore } from './stores/websocket';
+
+const webSocketStore = useWebSocketStore();
+const isWebSocketConnected = ref(webSocketStore.isConnected);
 </script>
 
 <template>
   <div class="main-container">
     <div class="contents-wrapper">
       <div style=''>
-        <RouterView />
+        <WebSocketDialog v-if="!isWebSocketConnected" />
+        <RouterView v-else />
       </div>
     </div>
     <Toast />

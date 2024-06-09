@@ -2,19 +2,24 @@
   <home-layout>
     <template #content>
       <div class="container">
-        <!-- <heading-panel /> -->
-        <div>&bullet;</div>
-        <account-balance-tab />
-        
+        <div class="flex-container">
+          <points-modal />
+          <!-- <league-modal /> -->
+        </div>
+
+        <farming-button />
+
+        <!-- <trivia-component /> -->
         <!-- <game-cards-grid /> -->
-        <footing-panel />
+        <!-- :particlesInit="particlesInit" :particlesLoaded="particlesLoaded" -->
       </div>
     </template>
   </home-layout>
 </template>
 
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <style>
 .container {
@@ -25,11 +30,22 @@
   height: 100%;
   overflow: hidden;
   isolation: isolate;
-  background: rgb(0, 0, 0);
   padding-inline: .5rem;
+  gap: 1rem;
+  padding-inline: 2rem;
+  padding-top: 2rem;
+  padding-bottom:1rem
 }
 
-.container::before {
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* .container::before {
   content: '';
   position: absolute;
   left: 50%;
@@ -50,6 +66,5 @@
   height: 50%;
   width: 50%;
   transform: translate(-50%, -50%);
-  z-index: -2;
-}
+} */
 </style>

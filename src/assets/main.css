@@ -8,6 +8,27 @@
 }
 
 
+@font-face {
+  font-family: 'Jaro';
+  src: url('./fonts/Jaro-Regular-VariableFont_opsz.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rowdies-Bold';
+  src: url('./fonts/Rowdies-Bold.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato-Bold';
+  src: url('./fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 .neon-text-flicker {
   animation: flicker 1.5s infinite alternate;
 }

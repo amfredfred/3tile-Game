@@ -3,6 +3,7 @@ import { useMainStore } from '@/stores/mainstore'
 import TileGameView from '@/views/Games/TileGame/TileGameView.vue'
 import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
 import HomeView from '@/views/HomeView.vue'
+import FarmView from '@/views/Farm/FarmView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,15 @@ const router = createRouter({
       path: '/rush-dot-game',
       name: 'rush-dot-game-page',
       component: RushDotgameView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    // 
+    {
+      path: '/farm',
+      name: 'farm-page',
+      component: FarmView,
       meta: {
         requires_auth: true
       }
