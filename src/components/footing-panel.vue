@@ -2,22 +2,22 @@
 
     <nav class="nav-bar">
         <div class="nav-inner">
-            <div class="white-bar"></div>
-            <RouterLink to="/" class="nav-link">
-                <span class="pi pi-home "></span>
-                <strong class="link-title">Home</strong>
+            <!-- <div class="white-bar"></div> -->
+            <RouterLink active-class="active" to="/" class="nav-link">
+                <span class="pi pi-dollar "></span>
+                <strong class="link-title">Farm</strong>
             </RouterLink>
-            <RouterLink to="/" class="nav-link">
-                <span class="pi pi-home "></span>
+            <RouterLink active-class="active" to="/tasks" class="nav-link">
+                <span class="pi pi-book "></span>
                 <strong class="link-title">Tasks</strong>
             </RouterLink>
-            <RouterLink to="/" class="nav-link">
-                <span class="pi pi-home "></span>
+            <RouterLink active-class="active" to="/frens" class="nav-link">
+                <span class="pi pi-users "></span>
                 <strong class="link-title">Frens</strong>
             </RouterLink>
-            <RouterLink to="/" class="nav-link">
-                <span class="pi pi-home "></span>
-                <strong class="link-title">Home</strong>
+            <RouterLink active-class="active" to="/rewards" class="nav-link">
+                <span class="pi pi-gift "></span>
+                <strong class="link-title">Rewards</strong>
             </RouterLink>
             <!-- <account-name /> -->
             <!-- <account-name /> -->
@@ -36,27 +36,33 @@ import { RouterLink } from 'vue-router';
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 3rem;
     border-radius: 5px;
     pointer-events: all;
+
+    backdrop-filter: blur(30px);
 }
 
-/* 
-.white-bar {
+
+/* .white-bar {
     width: 60%;
     border-radius: 50px;
-    background: white;
+    background: rgb(29, 25, 25);
     height: 10px;
-} */
+    aspect-ratio: 1;
+}  */
 
 .nav-bar {
-    padding-top: 0;
+    padding-top: .5rem;
     user-select: none;
     pointer-events: none;
     width: 100%;
     margin-top: auto;
-    background: rgb(17, 11, 11);
+    /* background: rgb(31, 31, 31); */
+    /* box-shadow: 0 0 1px  white; */
+    /* background: rgb(68, 69, 69); */
     color: aliceblue;
+    z-index: 1;
 }
 
 .nav-inner {
@@ -73,7 +79,15 @@ span.pi {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    color: rgb(132, 126, 126);
+
+    position: relative;
+}
+
+.nav-link.active {
+    color: rgb(255, 255, 255);
+    pointer-events: none;
+    outline: none;
 }
 
 .link-title {

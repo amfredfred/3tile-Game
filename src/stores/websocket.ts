@@ -93,6 +93,9 @@ export const useWebSocketStore = defineStore({
             if (data?.overview) {
                 _store.setAccountOverview(data.overview);
             }
+            if (data?.trivia_session) {
+                _store.setTriviaSession(data.trivia_session);
+            }
         },
         setOnMessageHandler() {
             this.socketInstance!.setOnmessage((event: MessageEvent) => {

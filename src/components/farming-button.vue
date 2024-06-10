@@ -15,16 +15,26 @@
                     <v-progress-circular size="16" v-if="farmData.isLoading" style="margin-left:auto" color="info"
                         indeterminate />
                     <strong v-else>{{ buttonText() }}</strong>
-                    <strong>
-                        &nbsp;{{ farmingReward }}
-                    </strong>
+                    <strong style="opacity: .5;">&nbsp;{{ farmingReward }}MEP </strong>
                 </div>
                 <span v-if="farmingEra?.is_farming">{{ formattedCountdown }}</span>
             </v-button>
+
+            <v-confetti v-if="farmData.isConfettiShown" />
         </div>
 
         <v-bottom-sheet :absolute="true" v-model="farmData.isButtonsheetOpen">
-
+            <div class="bottom-sheet-container power_string">
+                <img :src="AlramClock" alt="" class="image-small">
+                <h1 style="font-weight: 900;">Coming Soon</h1>
+                <p style="text-align: center;">
+                    Extend your farming era by 1Hr. You will be able to continue farming and earn
+                    more rewards.
+                </p>
+                <v-button disabled :class="['farming-button button-round ']">
+                    <strong class="">Extend ERA</strong>
+                </v-button>
+            </div>
         </v-bottom-sheet>
     </div>
 </template>
@@ -34,6 +44,7 @@ import { computed, onMounted, reactive } from 'vue';
 import { useMainStore } from '@/stores/mainstore';
 import { useWebSocketStore } from '@/stores/websocket';
 import { getActualCountdown } from '@/utils';
+import AlramClock from '@/assets/icons/alarm-clock.png'
 
 const farmData = reactive({
     waitTimeRequired: 600,
@@ -41,6 +52,8 @@ const farmData = reactive({
     isLoading: false,
     isFarming: false,
     isButtonsheetOpen: false,
+
+    isConfettiShown: false
 })
 
 const _store = useMainStore()
@@ -49,8 +62,8 @@ const farmingReward = computed(() => _store?.farmingEra?.claimable_reward)
 
 const buttonText = () => {
     if (farmData.isLoading) return "Loading..."
-    if (farmingEra.value?.is_ended) return "Claim"
-    if (farmingEra.value?.is_farming) return "Farming"
+    if (farmingEra.value?.is_ended) return "CLAIM"
+    if (farmingEra.value?.is_farming) return "FARMED"
 }
 
 const buttonStyle = () => {
@@ -64,6 +77,8 @@ const farmingButtonAction = async () => {
         await syncFarmingEra('createEra')
     } else if (farmingEra?.value?.is_ended) {
         await syncFarmingEra('harvestEra')
+
+        farmData.isConfettiShown = true
     } else {
         farmData.isButtonsheetOpen = true
     }
@@ -111,6 +126,7 @@ onMounted(async () => {
     border: none;
     width: 100%;
     padding: 1rem;
+    background: #0f0f10;
 }
 
 .indicator-wrapper {
@@ -120,7 +136,7 @@ onMounted(async () => {
 }
 
 .farming-button {
-    border: inherit;
+    border: none;
     box-shadow: none;
     padding: 1.3rem 1rem;
     border-radius: 10px;
@@ -129,7 +145,6 @@ onMounted(async () => {
     gap: .5rem;
     align-items: center;
     justify-content: space-between;
-
     font-size: 1em;
     flex-grow: 1;
 }

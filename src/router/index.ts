@@ -3,15 +3,43 @@ import { useMainStore } from '@/stores/mainstore'
 import TileGameView from '@/views/Games/TileGame/TileGameView.vue'
 import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
 import HomeView from '@/views/HomeView.vue'
+import TaskView from '@/views/Tasks/TasksView.vue'
+import FrensView from '@/views/Frens/FrensView.vue'
+import RewardsView from '@/views/Rewards/RewardsView.vue'
 import FarmView from '@/views/Farm/FarmView.vue'
+import NotFound404Page from '@/views/Errors/NotFound404Page.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'farm',
       component: HomeView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    {
+      path: '/tasks',
+      name: 'tasks',
+      component: TaskView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    {
+      path: '/frens',
+      name: 'frens',
+      component: FrensView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    {
+      path: '/rewards',
+      name: 'rewards',
+      component: RewardsView,
       meta: {
         requires_auth: true
       }
@@ -36,16 +64,16 @@ const router = createRouter({
     {
       path: '/farm',
       name: 'farm-page',
-      component: FarmView,
+      component: HomeView,
       meta: {
         requires_auth: true
       }
-    }
+    },
     // Add a wildcard route for 404 Not Found
-    // {
-    //   path: '/:catchAll(.*)',
-    //   component: NotFound404Page
-    // }
+    {
+      path: '/:catchAll(.*)',
+      component: NotFound404Page
+    }
   ]
 })
 

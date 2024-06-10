@@ -42,7 +42,7 @@ class WebSocketClient {
         this.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
-            console.log('WebSocket connection established.');
+            // console.log('WebSocket connection established.');
             clearInterval(this.reconnectInterval as ReturnType<typeof setInterval>);
             this.reconnectAttempts = 0;
             if (callback) callback();

@@ -2,6 +2,7 @@ import '@/assets/main.css'
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import 'primeicons/primeicons.css'
 import 'swiper/css';
+import '@/assets/main.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -32,6 +33,8 @@ import FrensButton from '@/components/frens-button.vue'
 import BoostButton from '@/components/boost-button.vue'
 import ConfettiExplosion from "vue-confetti-explosion";
 import FarmView from './views/Farm/FarmView.vue'
+
+import ScreenHeading from '@/components/screen-heading.vue'
 
 import TriviaComponent from '@/components/trivia-component.vue'
 
@@ -68,6 +71,7 @@ app.component('game-cards-grid', GameCardsGrid)
 app.component('farming-button', FarmingButton)
 app.component('frens-button', FrensButton)
 app.component('boost-button', BoostButton)
+app.component('screen-heading', ScreenHeading)
 
 app.component('farm-view', FarmView)
 app.component('trivia-component', TriviaComponent)

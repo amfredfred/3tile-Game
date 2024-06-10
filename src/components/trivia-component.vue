@@ -3,6 +3,12 @@
         <h3 style="font-weight: 400;">Metro Trivia
             <small style="color: burlywood;">{{ triviaSession?.session_name }}</small>
         </h3>
+
+        <div class="bottom-sheet-container">
+            <h1 style="font-weight: 900;">Coming Soon</h1>
+            <img :src="SpeechPhoto" alt="" class="image-small">
+        </div>
+
         <v-skeleton-loader v-if="!triviaSession?.id" type="card"
             style="width: 100%;background: grey;"></v-skeleton-loader>
         <swiper v-else class="swiper-container" :options="swiperOptions" :modules="modules" effect='cube'>
@@ -34,11 +40,12 @@ import { useMainStore } from '@/stores/mainstore';
 
 import 'swiper/css/effect-cube';
 import 'swiper/css/pagination';
-import { wsocket } from '@/configs/wsocket';
 import type { IOption } from '@/interfaces/ITrivia';
+import { useWebSocketStore } from '@/stores/websocket';
+
+import SpeechPhoto from '@/assets/icons/speech-bubbles-icon.png'
 
 const modules = [EffectCube, Pagination]
-const wssocket = wsocket()
 const _store = useMainStore()
 const triviaSession = computed(() => _store?.triviaSession)
 const isWaiting = ref(false)
@@ -60,30 +67,16 @@ function picked(option: IOption) {
     // isWaiting.value = false
 }
 
+const socket = useWebSocketStore()
 onMounted(() => {
-    const instance = wssocket.instance;
-    if (instance && instance.OPEN) {
-        instance.onopen = () => wssocket.send('trivia', null, 'getActiveSession')
-        instance.onmessage = (messageEvent) => {
-            const message = messageEvent.data;
-            try {
-                const data = JSON.parse(message);
-                if (data?.trivia_session) {
-                    console.log(data)
-                    _store.setTriviaSession(data.trivia_session);
-                }
-            } catch (error) {
-                // console.error('Error decoding WebSocket message:', error);
-            }
-        };
-    }
+    socket.sendMessage('trivia', null, 'getActiveSession')
 })
 
 </script>
 
 <style scoped>
 .trivia-main-wrapper {
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
