@@ -1,7 +1,7 @@
 <template>
     <div class="layout">
         <!-- <heading-panel /> -->
-        <!-- <vue-particles id="tsparticles" class="particles" :options="ParticleConst" /> -->
+        <vue-particles id="tsparticles" class="particles" :options="ParticleConst" />
         <div class="container-main">
             <slot name="content" />
         </div>
@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import Toast from 'primevue/toast';
-// import { ParticleConst } from '@/configs/particles-options';  
+import { ParticleConst } from '@/configs/particles-options';  
 </script>
 
 <style scoped>

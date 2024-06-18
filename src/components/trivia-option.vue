@@ -6,15 +6,15 @@
 </template>
 
 <script setup lang="ts">
-import { wsocket } from '@/configs/wsocket';
 import { promise } from '@/utils';
 import { useSwiper } from 'swiper/vue'
 import { reactive, type PropType } from 'vue';
 import { type IOption } from '@/interfaces/ITrivia';
+import { useWebSocketStore } from '@/stores/websocket';
 
 const swiper = useSwiper()
 const emit = defineEmits(['onPicked', 'onSettled'])
-const wssocket = wsocket()
+const wssocket = useWebSocketStore()
 
 const states = reactive({
     isLoading: false
@@ -34,7 +34,7 @@ const onPicked = async () => {
     emit('onPicked', props.option.id)
     states.isLoading = true
     await promise(1000)
-    wssocket.send('trivia', { optionId: props.option.id }, 'answerQuestion')
+    wssocket.sendMessage('trivia', { optionId: props.option.id }, 'answerQuestion')
     states.isLoading = false
     swiper.value.slideNext()
     emit('onSettled')

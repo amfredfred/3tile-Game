@@ -40,7 +40,8 @@ import { RouterLink } from 'vue-router';
     border-radius: 5px;
     pointer-events: all;
 
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(60px);
+    background: rgb(0, 0, 0);
 }
 
 

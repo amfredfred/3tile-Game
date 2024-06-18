@@ -6,7 +6,7 @@
                 <!-- <img :src="GroupOfPeopleIcon" alt="" class="image-small"> -->
 
                 <p style="text-align: center; max-width: 90%; font-size: 13px;">
-                    Fructify 10% from frens, 3% from fren frens. 😁
+                    Fructify 10% from frens, 3% from fren frens.
                 </p>
                 <v-infinite-scroll class="frens-container" :height="300" :items="items" :onLoad="load">
                     <template v-for="(item, index) in items" :key="item">

@@ -93,30 +93,6 @@
   width: 100%;
 }
 
-.container::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  backdrop-filter: blur(150px);
-}
-
-.container::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 70%;
-  background: linear-gradient(to top left, rgb(9, 145, 138), rgb(3, 172, 198));
-  width: 300px;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  border-radius: 50px;
-}
 
 .button-round {
   border-radius: 50px !important;
@@ -124,6 +100,79 @@
   justify-content: center !important;
   /* background: red !important; */
   outline: none !important;
+}
+
+.farming-button {
+  border: none;
+  box-shadow: none;
+  padding: 1rem;
+  border-radius: 10px;
+  color: white;
+  background: rgb(17, 31, 31);
+  gap: .5rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1em;
+  width: 100%;
+}
+
+
+
+.farming-button strong,
+.farming-button span {
+  font-weight: 500
+}
+
+.farm-data-shown {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.farm-data-shown strong {
+  font-weight: 900;
+  font-size: 2.4em;
+  height: 100%;
+  color: white;
+}
+
+.farming-button::after {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  content: '';
+  font-weight: 900;
+  text-shadow: 0 0 1px rgb(43, 49, 58);
+  font-size: 1.1rem;
+  width: 70px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+
+.farming-button::before {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  content: '';
+  font-weight: 900;
+  font-size: .8rem;
+  z-index: 1;
+  opacity: .1;
+  pointer-events: none;
+  text-transform: uppercase;
+  background: red;
+}
+
+.farming-button .icon {
+  width: 25px;
 }
 
 .image-small {
@@ -226,7 +275,8 @@ display: inline-block;
   max-width: 1280px;
   margin: 0 auto;
   font-weight: normal;
-  display: flex;
+  overflow: hidden;
+  height: 100dvh;
 }
 
 a,

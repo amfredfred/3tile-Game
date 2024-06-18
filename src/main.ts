@@ -23,8 +23,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import ExplossiveCountdown from '@/components/explossive-countdown.vue'
 import HomeLayout from '@/layouts/home-layout.vue'
-import HeadingPanel from '@/components/heading-panel.vue'
-import FootingPanel from '@/components/footing-panel.vue'
+import HeadingPanel from '@/components/panels/heading-panel.vue'
+import FootingPanel from '@/components/panels/footing-panel.vue'
 import Skeleton from 'primevue/skeleton'
 import NumberAnimation from "vue-number-animation";
 import GameCardsGrid from './components/game-cards-grid.vue'
@@ -32,7 +32,6 @@ import FarmingButton from '@/components/farming-button.vue'
 import FrensButton from '@/components/frens-button.vue'
 import BoostButton from '@/components/boost-button.vue'
 import ConfettiExplosion from "vue-confetti-explosion";
-import FarmView from './views/Farm/FarmView.vue'
 
 import ScreenHeading from '@/components/screen-heading.vue'
 
@@ -43,6 +42,8 @@ import { loadFull } from "tsparticles";
 import TriviaOption from './components/trivia-option.vue';
 import LeagueModal from './components/league-modal.vue';
 
+import onboradingButton from './components/onborading-button.vue';
+
 const app = createApp(App)
 
 const vuetify = createVuetify({
@@ -52,7 +53,7 @@ const vuetify = createVuetify({
 })
 
 app.use(createPinia())
-app.use(ToastService,)
+app.use(ToastService )
 app.use(router)
 app.use(PrimeVue, { ripple: true })
 app.use(MotionPlugin)
@@ -73,7 +74,6 @@ app.component('frens-button', FrensButton)
 app.component('boost-button', BoostButton)
 app.component('screen-heading', ScreenHeading)
 
-app.component('farm-view', FarmView)
 app.component('trivia-component', TriviaComponent)
 app.component('trivia-option', TriviaOption)
 app.component('league-modal', LeagueModal)
@@ -82,6 +82,8 @@ app.component('v-skeleton', Skeleton)
 app.component('v-button', Button)
 app.component('v-number', NumberAnimation)
 app.component('v-confetti', ConfettiExplosion);
+
+app.component('r-button', onboradingButton)
 
 app.mount('#app');
 

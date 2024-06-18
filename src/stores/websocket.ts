@@ -3,7 +3,7 @@ import { wsocket } from '@/configs/wsocket';
 import { defineStore } from 'pinia';
 import { useMainStore } from './mainstore';
 
-type IRoute = 'game' | 'overview' | 'balance' | 'trivia' | 'farming';
+type IRoute = 'game' | 'overview' | 'balance' | 'trivia' | 'farming' | 'authenticate';
 type IAction = 'createSession' | 'addQuestionToSession' | 'addOptionToQuestion' | 'answerQuestion' | 'getActiveSession' | 'createEra' | 'activeEra' | 'harvestEra';
 
 export const useWebSocketStore = defineStore({
@@ -96,6 +96,20 @@ export const useWebSocketStore = defineStore({
             if (data?.trivia_session) {
                 _store.setTriviaSession(data.trivia_session);
             }
+
+            if ("isUser" in data) {
+                if (data?.isUser) {
+                    _store.setIsGuestState(false);
+                    _store.setUser(data?.user);
+                } else {
+                    _store.setIsGuestState(true)
+                }
+            }
+            // 
+            if (data?.error) {
+                console.log({ data })
+            }
+            // console.log(data)
         },
         setOnMessageHandler() {
             this.socketInstance!.setOnmessage((event: MessageEvent) => {

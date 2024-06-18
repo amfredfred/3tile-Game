@@ -14,7 +14,7 @@
     </nav>
 </template>
 
-<script setup>
+<script setup lang='ts'>
 import { useMainStore } from '@/stores/mainstore';
 
 const _store = useMainStore()

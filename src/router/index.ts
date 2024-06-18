@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore'
 import TileGameView from '@/views/Games/TileGame/TileGameView.vue'
 import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
@@ -6,15 +6,31 @@ import HomeView from '@/views/HomeView.vue'
 import TaskView from '@/views/Tasks/TasksView.vue'
 import FrensView from '@/views/Frens/FrensView.vue'
 import RewardsView from '@/views/Rewards/RewardsView.vue'
-import FarmView from '@/views/Farm/FarmView.vue'
-import NotFound404Page from '@/views/Errors/NotFound404Page.vue'
+// import NotFound404Page from '@/views/Errors/NotFound404Page.vue'
+import OnboardingView from '@/views/Onboading/OnboardingView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/onboarding',
+      name: 'onboarding',
+      component: OnboardingView,
+      meta: {
+        requires_auth: false
+      }
+    },
+    {
       path: '/',
       name: 'farm',
+      component: HomeView,
+      meta: {
+        requires_auth: true
+      }
+    },
+    {
+      path: '/farm',
+      name: 'farm-home',
       component: HomeView,
       meta: {
         requires_auth: true
@@ -70,29 +86,34 @@ const router = createRouter({
       }
     },
     // Add a wildcard route for 404 Not Found
-    {
-      path: '/:catchAll(.*)',
-      component: NotFound404Page
-    }
+    // {
+    //   path: '/:catchAll(.*)',
+    //   component: NotFound404Page
+    // }
   ]
 })
 
 
-router.beforeEach(async function (to, from, next) {
-  const _store = useMainStore()
-  if (to.meta.requires_auth) {
-    if (_store.is_guest || !_store.user) {
-      _store.setShowAuthModal(true)
-      next()
-    } else {
-      if (_store.show_auth_modal) {
-        _store.setShowAuthModal(false)
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  try {
+    const _store = useMainStore();
+    if (_store.is_guest && to.meta.requires_auth) {
+      if (to.name !== 'onboarding') {
+        return next({ name: 'onboarding' });
+      } else {
+        return next();
       }
-      next()
     }
-  } else {
-    next()
+    if (_store.show_auth_modal) {
+      _store.setShowAuthModal(false);
+    }
+    if (to.name === 'onboarding' && !_store.is_guest) {
+      return next('')
+    }
+    return next();
+  } catch (error) {
+    console.error("Error during route navigation:", error);
+    next(false);
   }
-})
-
+});
 export default router

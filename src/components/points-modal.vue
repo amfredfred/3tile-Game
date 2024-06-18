@@ -19,6 +19,7 @@ import { useWebSocketStore } from '@/stores/websocket';
 const _store = useMainStore();
 const points = computed(() => _store?.overview?.totalScore);
 const socket = useWebSocketStore()
+
 onMounted(() => {
     socket.sendMessage('overview')
 });

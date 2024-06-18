@@ -28,10 +28,10 @@ class WebSocketClient {
     constructor(public host: string) { }
 
     connect(path?: string, callback?: Function): WebSocket | null {
-        const xtelegramid = initialState?.user?.id;
+        const xtelegramid = ((window as any).Telegram)?.WebApp?.initDataUnsafe?.user?.id
+
         if (!xtelegramid) {
-            console.log({ xtelegramid });
-            return null;
+            return this.socket;
         }
 
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
@@ -112,7 +112,9 @@ class WebSocketClient {
     }
 }
 
-const _host = 'ws://192.168.1.119:8080';
+// ws://statugram.com/ws
+const isLive = true
+const _host = isLive ? 'ws://statugram.com/ws' : 'ws://192.168.1.119:8080';
 const wsocket = (host: string = _host) => new WebSocketClient(host);
 
 export { wsocket };

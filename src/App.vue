@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RouterView, } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore';
 import { onMounted, ref } from 'vue';
-import Toast from 'primevue/toast';
 
 const _store = useMainStore()
 
 onMounted(() => {
 
+  console.log((window as any).Telegram);
 
   ((window as any).Telegram) = {
     WebApp: {
@@ -19,19 +19,14 @@ onMounted(() => {
     }
   } as any
 
-
-  _store.setUser({
-    first_name: 'dev fred fred',
-    username: 'userdev',
-    id: 6033850568
-  })
-
   webSocketStore.initializeWebSocket().then(() => {
     isWebSocketConnected.value = true;
   }).catch((error) => {
-    console.error('Failed to initialize WebSocket:', error);
+    error
+    // console.error('Failed to initialize WebSocket:', error);
     // Handle the error accordingly, e.g., show an error message to the user
   });
+
 })
 
 import WebSocketDialog from '@/OutsideBox/WebSocketDialog.vue';
@@ -44,12 +39,9 @@ const isWebSocketConnected = ref(webSocketStore.isConnected);
 <template>
   <div class="main-container">
     <div class="contents-wrapper">
-      <div style=''>
-        <WebSocketDialog v-if="!isWebSocketConnected" />
-        <RouterView v-else />
-      </div>
+      <WebSocketDialog v-if="!isWebSocketConnected" />
+      <RouterView v-else />
     </div>
-    <Toast />
   </div>
 </template>
 
@@ -57,7 +49,7 @@ const isWebSocketConnected = ref(webSocketStore.isConnected);
 <style scoped>
 .main-container {
   position: relative;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   width: 498px;
   max-width: 100dvw;
@@ -67,7 +59,6 @@ const isWebSocketConnected = ref(webSocketStore.isConnected);
   background: black;
   /* border-radius: 20px 20px 0 0; */
 }
-
 
 .contents-wrapper {
   height: 100%;

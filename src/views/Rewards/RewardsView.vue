@@ -3,8 +3,6 @@
         <template #content>
             <div class="container">
                 <screen-heading title="MEP rewards {soon}" heading="Let today reward you" />
-                <!-- <img :src="GiftBox" alt="" class="image-small"> -->
-
                 <v-infinite-scroll class="rewards-container" :height="300" :items="items" :onLoad="load">
                     <template v-for="(item, index) in items" :key="item">
                         <div :class="['pa-2 ', index % 2 === 0 ? 'bg-grey-lighten-2' : '']">
@@ -23,7 +21,6 @@
 
 
 <script setup lang="ts">
-import GiftBox from '@/assets/icons/gift-box.png'
 import { ref } from 'vue';
 
 const items = ref(Array.from({ length: 30 }, (k, v) => v + 1))
