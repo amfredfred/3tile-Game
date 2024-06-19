@@ -1,14 +1,5 @@
 <template>
     <div class="farming-inner-container">
-        <div class="farm-data-display  neon-apply neon-purple">
-            <v-progress-circular style="color: black;"
-                :model-value="(farmData.waitedTime / farmData.waitTimeRequired) * 100" :rotate="360" :size="80"
-                :width="15">
-                <v-progress-circular style="color: #F44F5A;" size="100" width="10" v-if="farmData.isLoading"
-                    indeterminate />
-            </v-progress-circular>
-        </div>
-
         <div class="indicator-wrapper">
             <v-button @click.stop="farmingButtonAction" :class="['farming-button button-round']" :style="buttonStyle()">
                 <div class="farming-indicator">
@@ -52,7 +43,7 @@ const farmData = reactive({
     isLoading: false,
     isFarming: false,
     isButtonsheetOpen: false,
-    isConfettiShown: true
+    isConfettiShown: false
 })
 
 const _store = useMainStore()
@@ -113,24 +104,11 @@ onMounted(async () => {
     margin-top: auto;
 }
 
-.farm-data-display {
-    margin-bottom: 1.5rem;
-    gap: .5rem;
-    border-radius: 10px;
-    overflow: hidden;
-    align-items: center;
-    justify-content: center;
-    background: rgba(29, 31, 31, 0.5);
-    box-shadow: none;
-    border: none;
-    width: 100%;
-    padding: 1rem;
-    background: #0f0f10;
-}
 
 .indicator-wrapper {
     display: flex;
     gap: 1rem;
     width: 100%;
+    overflow: hidden;
 }
 </style>

@@ -43,6 +43,8 @@ import TriviaOption from './components/trivia-option.vue';
 import LeagueModal from './components/league-modal.vue';
 
 import onboradingButton from './components/onborading-button.vue';
+import WheelOfFame from './components/games/wheel-of-fame.vue';
+import FingerGearing from './components/games/finger-gearing.vue'
 
 const app = createApp(App)
 
@@ -73,6 +75,8 @@ app.component('farming-button', FarmingButton)
 app.component('frens-button', FrensButton)
 app.component('boost-button', BoostButton)
 app.component('screen-heading', ScreenHeading)
+app.component('wheel-of-fame', WheelOfFame)
+app.component('finger-gearing', FingerGearing)
 
 app.component('trivia-component', TriviaComponent)
 app.component('trivia-option', TriviaOption)

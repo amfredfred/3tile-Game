@@ -22,7 +22,6 @@ import { ParticleConst } from '@/configs/particles-options';
     width: 100%;
     height: 100dvh;
     overflow: hidden;
-    background: rgb(9, 9, 11);
     position: relative;
     isolation: isolate;
 }

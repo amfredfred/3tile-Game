@@ -49,24 +49,30 @@ onMounted(() => {
 .earned-points-container {
     flex-grow: 1;
     border-radius: 50px;
-    background: linear-gradient(to top left, rgb(1, 47, 59), rgb(1, 65, 30));
+    background: var(--container-bg);
     height: 50px;
     display: flex;
     align-items: center;
     position: relative;
     justify-content: center;
     isolation: isolate;
+    overflow: hidden;
 }
 
 .earned-points-container::after {
     position: absolute;
-    left: -50px;
-    top: -50px;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
     content: '';
-    width: 100px;
+    width: 100%;
+    height: 110%;
     aspect-ratio: 1;
-    z-index: -2;
-    background: rgba(0, 0, 0);
+    z-index: -1;
+    /* background: rgba(0, 0, 0); */
+    backdrop-filter: blur(10px);
+    /* background: red; */
+    overflow: hidden;
 }
 
 .points {

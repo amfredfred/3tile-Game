@@ -54,14 +54,12 @@ import { RouterLink } from 'vue-router';
 }  */
 
 .nav-bar {
-    padding-top: .5rem;
+    padding-block: 1rem;
     user-select: none;
     pointer-events: none;
     width: 100%;
     margin-top: auto;
-    /* background: rgb(31, 31, 31); */
     /* box-shadow: 0 0 1px  white; */
-    /* background: rgb(68, 69, 69); */
     color: aliceblue;
     z-index: 1;
 }

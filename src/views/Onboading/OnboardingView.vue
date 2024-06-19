@@ -61,7 +61,6 @@ const modules = [EffectCube, Pagination]
 const intervalBeforeJumpingIn = ref<any>(null)
 const timeLeftBeforeJumingIn = ref(2)
 const onReady = ref(false)
-const _router = useRouter()
 const _store = useMainStore()
 
 const swiperOptions = {
