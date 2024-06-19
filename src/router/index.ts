@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore'
-import TileGameView from '@/views/Games/TileGame/TileGameView.vue'
 import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
 import HomeView from '@/views/HomeView.vue'
 import TaskView from '@/views/Tasks/TasksView.vue'
@@ -56,14 +55,6 @@ const router = createRouter({
       path: '/rewards',
       name: 'rewards',
       component: RewardsView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/3tile-game',
-      name: '3tile-game-page',
-      component: TileGameView,
       meta: {
         requires_auth: true
       }

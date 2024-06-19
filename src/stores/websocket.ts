@@ -78,7 +78,7 @@ export const useWebSocketStore = defineStore({
         async sendMessage(route: IRoute, data?: any, action?: IAction, callback?: (response?: any) => void) {
             await this.initializeWebSocket();
             if (this.socketInstance && this.isConnected) {
-                this.socketInstance.sendMessage(route, data, action, callback);
+                this.socketInstance.sendMessage(route as any, data, action, callback);
             } else {
                 console.error('WebSocket connection not initialized or not connected.');
             }

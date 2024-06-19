@@ -16,7 +16,6 @@ import PointsModal from '@/components/points-modal.vue'
 import Button from 'primevue/button'
 import accountPhoto from '@/components/account-photo.vue'
 import accountName from '@/components/account-name.vue'
-import TileDot from '@/views/Games/TileGame/components/TileDot.vue'
 import { MotionPlugin } from '@vueuse/motion'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -65,7 +64,6 @@ app.use(Particles, { init: async engine => await loadFull(engine) })
 app.component('points-modal', PointsModal)
 app.component('account-photo', accountPhoto)
 app.component('account-name', accountName)
-app.component('tile-dot', TileDot)
 app.component('explossive-countdown', ExplossiveCountdown)
 app.component('home-layout', HomeLayout)
 app.component('heading-panel', HeadingPanel)

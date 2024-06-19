@@ -6,9 +6,11 @@
           <points-modal />
           <!-- <league-modal /> -->
         </div>
-        <wheel-of-fame />
-        <finger-gearing />
-        <farming-button />
+        <!-- <wheel-of-fame /> -->
+        <div style="display: flex;  flex-direction: column;margin-top: auto;width: 100%;gap: 1rem;">
+          <finger-gearing />
+          <farming-button />
+        </div>
       </div>
     </template>
   </home-layout>

@@ -11,7 +11,8 @@
                 <v-infinite-scroll class="frens-container" :height="300" :items="items" :onLoad="load">
                     <template v-for="(item, index) in items" :key="item">
                         <div :class="['pa-2 ', index % 2 === 0 ? 'bg-grey-lighten-2' : '']">
-                            <v-skeleton-loader class="fren-item" theme="dark" :loading="true" type="list-item-avatar-three-line">
+                            <v-skeleton-loader class="fren-item" theme="dark" :loading="true"
+                                type="list-item-avatar-three-line">
                                 <v-list-item lines="three" color="secondary" subtitle="Subtitle" title="Title" rounded>
                                     Item number #{{ item }}
                                 </v-list-item>
@@ -30,7 +31,7 @@ import GroupOfPeopleIcon from '@/assets/icons/group-of-people-icon.png'
 
 import { ref } from 'vue'
 
-const items = ref(Array.from({ length: 30 }, (k, v) => v + 1))
+const items = ref<any>(Array.from({ length: 30 }, (k, v) => v + 1))
 
 async function api() {
     return new Promise(resolve => {
@@ -39,13 +40,8 @@ async function api() {
         }, 1000)
     })
 }
-async function load({ done }) {
-    // Perform API call
-    const res = await api()
+async function load() {
 
-    items.value.push(...res)
-
-    done('ok')
 }
 
 </script>
@@ -60,7 +56,7 @@ async function load({ done }) {
     gap: 1rem;
 }
 
-.fren-item{
-    background: rgba(23, 22, 22, 0.155) ;
+.fren-item {
+    background: rgba(23, 22, 22, 0.155);
 }
 </style>

@@ -113,8 +113,8 @@ class WebSocketClient {
 }
 
 // ws://statugram.com/ws
-const isLive = false
-const _host = isLive ? 'ws://statugram.com/ws' : 'ws://192.168.1.119:8080';
+const isLive = true
+const _host = isLive ? 'wss://statugram.com/ws' : 'ws://192.168.1.119:8080';
 const wsocket = (host: string = _host) => new WebSocketClient(host);
 
 export { wsocket };

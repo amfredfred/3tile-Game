@@ -1,16 +1,26 @@
 <template>
     <div id="game-container">
-        <vue-speedometer :value="rpmPercent" needleTransition="easeElastic" :needleTransitionDuration="3333"
-            :currentValueText="`RPM - ${rpm}`" :maxSegmentLabels="0" :segments="4" needleColor="#D8DEE9" />
+        <div class="gear-indicator">
+            Gear <strong><span style="color: green;">{{ gears }}</span> OF {{ maxGears }}</strong>
+        </div>
+        <div class="next-gear-indicator">
+            Next Gear IN <strong style="color: green;">{{ nextGearChangeRPM }}</strong>RPM
+        </div>
+        <div class="mph-indicator">
+            MP/H <strong style="color: orangered;">{{ speed }}</strong>
+        </div>
 
-        <v-button @mousedown="startCounting" @mouseleave="stopCounting" :class="['farming-button', 'button-round']">
-            <strong>Place your finger here</strong>
+        <vue-speedometer class="speedeometer" :value="rpmPercent" needleTransition="easeElastic"
+            :needleTransitionDuration="3333" :currentValueText="`RPM - ${rpm} OF ${maxTotalRPM}`" :maxSegmentLabels="0"
+            :segments="4" needleColor="#D8DEE9" />
+
+        <v-button :disable="wh.isMoving" style="font-family: Jaro;" @mousedown="startCounting" @mouseout="stopCounting"
+            :class="['farming-button', 'button-round']">
+            <strong>
+                {{ wh.isMoving ? `Take ${points} MEP` : 'MATCH THE PERDAL' }}
+            </strong>
         </v-button>
 
-        <div id="bonus">Engine RPM: {{ rpm }}</div>
-        <div id="gear-level">Gear: {{ gears }}</div>
-        <div id="speed">Speed (Mph): {{ speed }}</div>
-        <div id="points">Points: {{ points }}</div>
 
         <v-bottom-sheet :absolute="true" v-model="wh.isBottomSheetVisible">
             <div class="bottom-sheet-container power_string">
@@ -31,53 +41,55 @@ import VueSpeedometer from "vue-speedometer";
 const rpm = ref(0);
 const gears = ref(1);
 const points = ref('0');
-const interval = ref<number | null>(null);
-const maxRPM = 1000; // Maximum RPM before gear shifts
+const interval = ref<any>(null);
 const minRPM = 10; // Minimum RPM after gear shift
 const maxTotalRPM = 20000; // Maximum total RPM allowed
-
+const randomRPM = [maxTotalRPM / 2, maxTotalRPM / 3, maxTotalRPM / 4, maxTotalRPM / 5, maxTotalRPM / 1.5, maxTotalRPM / 1.3]
 const rpmPercent = ref(0)
+const maxGears = 20
+const nextGearChangeRPM = ref(maxTotalRPM / 4)
 
 const wh = reactive({
-    isBottomSheetVisible: false
+    isBottomSheetVisible: false,
+    isMoving: false
 });
 
-// Compute the speed (Mph) based on RPM and gear
 const speed = computed(() => {
     return ((rpm.value / 100) * gears.value).toFixed(2);
 });
 
-// Compute points based on speed
 const updatePoints = () => {
     points.value = speed.value;
 }
 
 const startCounting = () => {
-    console.log('Engine started');
-    if (interval.value) return; // Prevent multiple intervals
-
+    if (interval.value) return;
+    if (Number(points.value) > 0) return wh.isBottomSheetVisible = true
+    wh.isMoving = true
     interval.value = setInterval(() => {
         if (rpm.value >= maxTotalRPM) {
             stopCounting();
             return;
         }
-        if (rpm.value >= maxRPM && gears.value < 7) {
+        const item_index = Math.floor(randomRPM.length * Math.random())
+        if (rpm.value >= nextGearChangeRPM.value && gears.value < maxGears) {
             gears.value++;
-            rpm.value = minRPM; // Reset RPM after gear shift
+            nextGearChangeRPM.value = Math.floor(randomRPM[item_index])
+            rpm.value = minRPM;
         } else {
-            rpm.value += 10; // Increase RPM
-            rpmPercent.value = (rpm.value * maxTotalRPM) / 100
-            console.log(rpmPercent.value)
+            rpm.value += 5;
+            rpmPercent.value = ((rpm.value * 100) / maxTotalRPM) * 10
         }
-        updatePoints(); // Update points based on current speed
-    }, 20); // Increase RPM every 20 milliseconds
+        updatePoints();
+    }, 5);
 }
 
 const stopCounting = () => {
-    console.log('Engine stopped');
+    if (!wh.isMoving) return
+    wh.isMoving = false
     if (interval.value) clearInterval(interval.value);
     interval.value = null;
-    // wh.isBottomSheetVisible = true; // Uncomment if you want to show the bottom sheet when engine stops
+    wh.isBottomSheetVisible = true;
 }
 
 const claimReward = () => {
@@ -100,14 +112,37 @@ const claimReward = () => {
     width: 100%;
     border-radius: 20px;
     min-height: max-content;
-    padding-inline: 1rem;
+    padding: 1rem;
+    position: relative;
+    isolation: isolate;
+    color: white;
+    font-family: Jaro;
 }
 
-#bonus,
-#gear-level,
-#speed,
-#points {
-    font-size: 24px;
-    margin: 10px 0;
+.speedeometer {
+    height: 180px;
+}
+
+.gear-indicator,
+.mph-indicator,
+.next-gear-indicator {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+    border-radius: 50px;
+    padding: .1rem .6rem;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    z-index: -1;
+}
+
+.gear-indicator {
+    top: 70px;
+}
+
+.mph-indicator {
+    left: auto;
+    right: 15px;
 }
 </style>

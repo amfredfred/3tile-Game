@@ -155,7 +155,7 @@ const updateTargetPositions = () => {
     }
 }
 
-const incrementScore = (event, index) => {
+const incrementScore = (event:any, index:any) => {
     const target = state.targets[index];
     const currentTime = performance.now();
     const timeBetweenClicks = currentTime - state.lastClickTime;
