@@ -1,8 +1,8 @@
 <template>
     <div class="onboarding-container">
         <vue-particles id="tsparticles" class="particles" :options="ParticleConst" />
-        <swiper :enabled="!onReady" @slideChange="onSlideChange" :options="swiperOptions" class="swiper-container"
-            :modules="modules" effect='cube'>
+        <swiper @slideChange="onSlideChange" :options="swiperOptions" class="swiper-container" :modules="modules"
+            effect='cube'>
             <!-- First Slide: Project Details -->
             <swiper-slide class="swiper-slide">
                 <div class="slider-item">
@@ -53,20 +53,24 @@ import { ref, watch } from 'vue'
 import { ParticleConst } from '@/configs/particles-options';
 import GroupOfPeopleIcon from '@/assets/icons/alarm-clock.png'
 import WelcomeTipIcon from '@/assets/icons/welcome-tip.png'
-import { useRouter } from 'vue-router';
-import { useWebSocketStore } from '@/stores/websocket';
 import { useMainStore } from '@/stores/mainstore';
+import { useMutation } from '@tanstack/vue-query';
+import { apiCall } from '@/configs/api';
+import { generateRandomString } from '@/utils';
 
 const modules = [EffectCube, Pagination]
 const intervalBeforeJumpingIn = ref<any>(null)
 const timeLeftBeforeJumingIn = ref(2)
-const onReady = ref(false)
 const _store = useMainStore()
+
+const userMutation = useMutation({
+    mutationKey: ['user-registerd'],
+    mutationFn: async (data) => await apiCall('authenticate', '/', data)
+})
 
 const swiperOptions = {
     direction: 'horizontal',
 }
-
 
 const onSlideChange = (event: any) => {
     if (intervalBeforeJumpingIn.value) clearInterval(intervalBeforeJumpingIn.value)
@@ -76,7 +80,7 @@ const onSlideChange = (event: any) => {
             if (timeLeftBeforeJumingIn.value <= 0) {
                 if (intervalBeforeJumpingIn.value) clearInterval(intervalBeforeJumpingIn.value)
                 timeLeftBeforeJumingIn.value = 0
-                onReady.value = true
+                insertAccount()
             }
         }, 1000)
         return
@@ -84,20 +88,23 @@ const onSlideChange = (event: any) => {
     timeLeftBeforeJumingIn.value = 2
 }
 
-watch(() => onReady.value, (newval,) => newval && navigateToApp())
-watch(() => _store?.is_guest, async (newVal, oldVal) => {
-    if (oldVal) window.location.reload()
-})
-const socket = useWebSocketStore()
-const navigateToApp = async () => {
-    socket.sendMessage('authenticate', {
-        telegram_id: 1234567890,
-        chat_id: 6736746474463,
-        username: "some-of-God"
-    },)
+const insertAccount = () => {
+    userMutation.mutateAsync({
+        telegram_id: _store.tgUser()?.id,
+        chat_id: Math.floor(Math.random() * 1282),
+        username: generateRandomString(5)
+    } as any)
 }
 
-
+watch(() => userMutation.status.value, (newVal, oldValue) => {
+    if (newVal == 'success') {
+        _store.setIsGuestState(false)
+        console.log({ user: userMutation.data.value.data?.user })
+        _store.setUser(userMutation.data.value.data?.user)
+        window.location.reload()
+    }
+    oldValue
+}) 
 </script>
 
 <style scoped>

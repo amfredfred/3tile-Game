@@ -1,50 +1,74 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import { useMainStore } from '@/stores/mainstore';
-import { onMounted, ref } from 'vue';
+import { RouterView } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { useWebSocketStore } from './stores/websocket';
+import { apiCall } from '@/configs/api';
+import { useQuery } from '@tanstack/vue-query';
+import PreloaderDialog from './OutsideBox/PreloaderDialog.vue';
+import { useMainStore } from './stores/mainstore';
 
-const _store = useMainStore()
+// Store instances
+const webSocketStore = useWebSocketStore();
+const mainStore = useMainStore();
 
+// Reactive states
+const isWebSocketConnected = ref(false);
+const isFullyLoaded = ref(false);
+
+// Query for user authentication
+const userResponse = useQuery({
+  queryKey: ['user-authentication'],
+  queryFn: async () => await apiCall('authenticate'),
+  retry: 2,
+});
+
+// Watcher for user authentication status
+watch(() => userResponse.status.value, (newVal) => {
+  if (newVal === 'success') {
+    const userData = userResponse.data.value?.data?.user;
+    mainStore.setIsGuestState(false);
+    mainStore.setUser(userData);
+  }
+  isFullyLoaded.value = isWebSocketConnected.value;
+});
+
+// Watcher for WebSocket connection status
+watch(() => isWebSocketConnected.value, (newVal) => {
+  if (newVal) {
+    isFullyLoaded.value = userResponse.status.value === 'success';
+  }
+});
+
+// On component mount
 onMounted(() => {
-
-  console.log((window as any).Telegram);
-
-  ((window as any).Telegram) = {
+  (window as any).Telegram = {
     WebApp: {
       initDataUnsafe: {
         user: {
-          id: 6033850568
-        } as any
-      } as any
-    }
-  } as any
+          id: 845678343434,
+        },
+      },
+    },
+  };
 
-  webSocketStore.initializeWebSocket().then(() => {
-    isWebSocketConnected.value = true;
-  }).catch((error) => {
-    error
-    // console.error('Failed to initialize WebSocket:', error);
-    // Handle the error accordingly, e.g., show an error message to the user
-  });
-
-})
-
-import WebSocketDialog from '@/OutsideBox/WebSocketDialog.vue';
-import { useWebSocketStore } from './stores/websocket';
-
-const webSocketStore = useWebSocketStore();
-const isWebSocketConnected = ref(webSocketStore.isConnected);
+  webSocketStore.initializeWebSocket()
+    .then(() => {
+      isWebSocketConnected.value = true;
+    })
+    .catch((error) => {
+      console.error('WebSocket initialization error:', error);
+    });
+});
 </script>
 
 <template>
   <div class="main-container">
     <div class="contents-wrapper">
-      <WebSocketDialog v-if="!isWebSocketConnected" />
+      <PreloaderDialog v-if="!isFullyLoaded" />
       <RouterView v-else />
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .main-container {

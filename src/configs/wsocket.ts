@@ -1,8 +1,7 @@
-import { initialState } from "@/stores/mainstore";
+import { tgUser } from "@/stores/mainstore";
 
 type IRoute = 'game' | 'overview' | 'balance' | 'trivia' | 'farming';
 type IAction = 'createSession' | 'addQuestionToSession' | 'addOptionToQuestion' | 'answerQuestion' | 'getActiveSession' | 'createEra' | 'activeEra' | 'harvestEra';
-
 
 class WebSocketClient {
     socket: WebSocket | null = null;
@@ -28,7 +27,7 @@ class WebSocketClient {
     constructor(public host: string) { }
 
     connect(path?: string, callback?: Function): WebSocket | null {
-        const xtelegramid = ((window as any).Telegram)?.WebApp?.initDataUnsafe?.user?.id
+        const xtelegramid = tgUser()?.id
 
         if (!xtelegramid) {
             return this.socket;
@@ -77,7 +76,7 @@ class WebSocketClient {
         const content = {
             params: {
                 route,
-                "x-t-id": `${initialState?.user?.id}`,
+                "x-t-id": `${tgUser()?.id}`,
                 action,
                 data
             },
@@ -113,8 +112,8 @@ class WebSocketClient {
 }
 
 // ws://statugram.com/ws
-const isLive = true
-const _host = isLive ? 'wss://statugram.com/ws' : 'ws://192.168.1.119:8080';
+const isLive = false
+const _host = isLive ? 'wss://www.statugram.com/ws' : 'ws://192.168.1.119:7878';
 const wsocket = (host: string = _host) => new WebSocketClient(host);
 
 export { wsocket };

@@ -25,7 +25,7 @@ export const calculateRemainingTime = (endDate: number = 0) => {
 };
 
 
-export const getActualCountdown = (timestamp: number= 0) => {
+export const getActualCountdown = (timestamp: number = 0) => {
     const { hours, minutes, seconds } = calculateRemainingTime(timestamp);
     let formattedTime = '';
     if (hours !== null) {
@@ -38,4 +38,15 @@ export const getActualCountdown = (timestamp: number= 0) => {
         formattedTime += `${seconds}s`;
     }
     return formattedTime.trim();
+}
+
+export
+    function generateRandomString(length: number) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+    }
+    return result;
 }

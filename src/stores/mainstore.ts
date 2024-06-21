@@ -42,6 +42,8 @@ const setLocalStorageItem = <K extends LocalStorageKeys>(key: K, value: LocalSto
     localStorage.setItem(key, btoa(JSON.stringify(value)));
 };
 
+const tgUser = () => ((window as any).Telegram)?.WebApp?.initDataUnsafe?.user
+
 const initialState: IState = {
     show_progress_bar: true,
     is_guest: getLocalStorageItem(LocalStorageKeys.IS_GUEST) ?? true,
@@ -62,7 +64,7 @@ export const useMainStore = defineStore({
         ...initialState
     }),
     getters: {
-
+        tgUser: () => tgUser
     },
     actions: {
         setIsGuestState(state: boolean) {
@@ -91,4 +93,4 @@ export const useMainStore = defineStore({
     },
 });
 
-export { initialState, LocalStorageKeys };
+export { initialState, LocalStorageKeys, tgUser };

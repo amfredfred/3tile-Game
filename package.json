@@ -14,9 +14,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.45.0",
     "@tsparticles/vue3": "^3.0.1",
     "@types/telegram-web-app": "^7.2.1",
     "@vueuse/motion": "^2.1.0",
+    "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "pinia": "^2.1.7",
     "primeicons": "^7.0.0",

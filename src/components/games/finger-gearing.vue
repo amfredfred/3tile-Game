@@ -3,9 +3,9 @@
         <div class="gear-indicator">
             Gear <strong><span style="color: green;">{{ gears }}</span> OF {{ maxGears }}</strong>
         </div>
-        <div class="next-gear-indicator">
+        <!-- <div class="next-gear-indicator">
             Next Gear IN <strong style="color: green;">{{ nextGearChangeRPM }}</strong>RPM
-        </div>
+        </div> -->
         <div class="mph-indicator">
             MP/H <strong style="color: orangered;">{{ speed }}</strong>
         </div>
@@ -137,9 +137,7 @@ const claimReward = () => {
     z-index: -1;
 }
 
-.gear-indicator {
-    top: 70px;
-}
+
 
 .mph-indicator {
     left: auto;
