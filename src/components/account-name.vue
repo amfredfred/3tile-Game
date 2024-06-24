@@ -1,12 +1,10 @@
 <template>
-    <span class="name-span">{{ (_store.user?.first_name ?? '' + _store?.user?.last_name ?? '') ?? "@" + _store.user?.username }}</span>
+    <span class="name-span">{{  }}</span>
 </template>
 
 
 <script setup lang="ts">
-import { useMainStore } from '@/stores/mainstore';
 
-const _store = useMainStore()
 </script>
 
 

@@ -132,7 +132,7 @@ onMounted(async () => {
     overflow: hidden;
     align-items: center;
 
-    border-radius: 5px;
+    border-radius: 50px;
 }
 
 .indicator-wrapper hr {

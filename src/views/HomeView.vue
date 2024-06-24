@@ -3,7 +3,7 @@
     <template #content>
       <div class="container">
         <div class="flex-container">
-          <points-modal />
+          <!-- <points-modal /> -->
           <!-- <league-modal /> -->
         </div>
         <!-- <wheel-of-fame /> -->

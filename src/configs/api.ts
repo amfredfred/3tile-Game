@@ -1,4 +1,4 @@
-import axios, { type AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import { apiRoutes } from './api-routes';
 import { tgUser } from "@/stores/mainstore";
 
@@ -46,17 +46,17 @@ api.interceptors.response.use(
 
 
 // Function to make API calls using the defined routes
-const apiCall = async (routeFunc: keyof typeof apiRoutes, pathTo: string = '/', ...args: any[]) => {
+const apiCall = async <T>(routeFunc: keyof typeof apiRoutes, pathTo: string = '/', ...args: any[]): Promise<AxiosResponse<T>> => {
     const { method, path, data } = apiRoutes[routeFunc](args, pathTo);
     const config: AxiosRequestConfig = { method, url: path };
 
     if (data) {
-        config.data = data;
+        config.data = { data };
     }
 
     try {
-        const response = await api(config);
-        return response.data;
+        const response: AxiosResponse<T> = await api(config);
+        return response;
     } catch (error) {
         console.error('API call error:', error);
         throw error;

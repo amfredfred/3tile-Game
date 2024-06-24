@@ -1,6 +1,6 @@
 <template>
     <nav class="nav-bar">
-        <div v-if="!_store.user">
+        <div v-if="!_store?.user">
             Authenticate
         </div>
         <div v-else class="nav-inner">
@@ -22,19 +22,23 @@ const _store = useMainStore()
 
 
 <style scoped>
+.nav-bar{
+    padding: 1rem;
+}
 .nav-bar,
 .nav-inner {
     width: 100%;
-    background: rgb(33, 33, 33);
-    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: .6rem;
+    z-index:4
 }
 
 .nav-inner {
-    padding: 10px;
+    padding-inline: 1rem;
+    border-radius: 50px;
+    background: var(--container-bg);
 }
 
 .items-right {

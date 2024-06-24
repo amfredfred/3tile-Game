@@ -1,12 +1,12 @@
 <template>
-    <div class="earned-points-container">
-        <img :src="IconCoin" alt="" class="icon">
+    <v-button class="earned-points-container">
+        <!-- <img :src="IconCoin" alt="" class="icon"> -->
         <div class="points-container">
             <v-progress-circular size="30" v-if="!points" style="margin-left:auto" color="info" indeterminate />
             <span class="points" v-else>{{ formatNumber(Number(points || 0)) }}</span>
             <strong class="account-denomination">MEP</strong>
         </div>
-    </div>
+    </v-button>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +31,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-inline: 1rem;
+    /* padding-inline: 1rem; */
     gap: .5rem;
     font-family: Lato-Bold;
 }
@@ -48,8 +48,10 @@ onMounted(() => {
 
 .earned-points-container {
     flex-grow: 1;
-    border-radius: 50px;
-    background: var(--container-bg);
+    border-radius: 0;
+    /* background: var(--container-bg); */
+    background:transparent;
+    border:none;
     height: 50px;
     display: flex;
     align-items: center;
@@ -57,6 +59,7 @@ onMounted(() => {
     justify-content: center;
     isolation: isolate;
     overflow: hidden;
+    padding:0
 }
 
 .earned-points-container::after {

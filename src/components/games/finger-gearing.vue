@@ -1,31 +1,29 @@
 <template>
     <div id="game-container">
         <div class="gear-indicator">
-            Gear <strong><span style="color: green;">{{ gears }}</span> OF {{ maxGears }}</strong>
+            * <strong><span style="color: green;">{{ gears }}</span>/{{ maxGears }}</strong>
         </div>
         <!-- <div class="next-gear-indicator">
             Next Gear IN <strong style="color: green;">{{ nextGearChangeRPM }}</strong>RPM
         </div> -->
         <div class="mph-indicator">
-            MP/H <strong style="color: orangered;">{{ speed }}</strong>
+            <strong style="color: orangered;">{{ speed }}</strong>
         </div>
 
         <vue-speedometer class="speedeometer" :value="rpmPercent" needleTransition="easeElastic"
             :needleTransitionDuration="3333" :currentValueText="`RPM - ${rpm} OF ${maxTotalRPM}`" :maxSegmentLabels="0"
-            :segments="4" needleColor="#D8DEE9" />
+            :segments="70" needleColor="#D8DEE9" />
 
-        <v-button :disable="wh.isMoving" style="font-family: Jaro;" @mousedown="startCounting" @mouseout="stopCounting"
+        <v-button :disabled="wh.isMoving" style="border-radius: 5px !important;"  @mousedown="startCounting" @mouseout="stopCounting"
             :class="['farming-button', 'button-round']">
-            <strong>
-                {{ wh.isMoving ? `Take ${points} MEP` : 'MATCH THE PERDAL' }}
-            </strong>
+                {{ wh.isMoving ? `Take ${points} MEP` : 'PRESSS HERE (soon)' }}
         </v-button>
 
 
         <v-bottom-sheet :absolute="true" v-model="wh.isBottomSheetVisible">
             <div class="bottom-sheet-container power_string">
-                <h1 style="font-weight: 900;">Congrats 🎉🎉</h1>
-                <p style="text-align: center;">{{ points }}</p>
+                <!-- <h1 style="font-weight: 900;">AWESOME YOU</h1> -->
+                <p style="text-align: center;">You earned {{ points }} POINTS</p>
                 <v-button @click="claimReward" :class="['farming-button', 'button-round']">
                     <strong>CLAIM REWARD</strong>
                 </v-button>
@@ -49,9 +47,10 @@ const rpmPercent = ref(0)
 const maxGears = 20
 const nextGearChangeRPM = ref(maxTotalRPM / 4)
 
+
 const wh = reactive({
     isBottomSheetVisible: false,
-    isMoving: false
+    isMoving:true //false
 });
 
 const speed = computed(() => {
@@ -108,15 +107,17 @@ const claimReward = () => {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: var(--container-bg);
+    /* background: var(--container-bg); */
     width: 100%;
     border-radius: 20px;
     min-height: max-content;
-    padding: 1rem;
+    padding-top: 5rem;
     position: relative;
     isolation: isolate;
     color: white;
-    font-family: Jaro;
+    /* overflow: hidden; */
+
+    padding:1rem
 }
 
 .speedeometer {
@@ -127,20 +128,19 @@ const claimReward = () => {
 .mph-indicator,
 .next-gear-indicator {
     position: absolute;
-    left: 15px;
-    top: 30px;
+    left: 5px;
+    bottom: 63px;
     border-radius: 50px;
     padding: .1rem .6rem;
     display: flex;
     align-items: center;
     gap: .3rem;
-    z-index: -1;
 }
 
 
 
 .mph-indicator {
     left: auto;
-    right: 15px;
+    right: 5px;
 }
 </style>

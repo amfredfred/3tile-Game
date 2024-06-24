@@ -1,7 +1,8 @@
 type IRouteNames =
     'users' |
     'authenticate' |
-    'farm'
+    'farm' |
+    'referrals'
 
 export type IRouteMethods =
     'post' |
@@ -29,5 +30,11 @@ export const apiRoutes: IApiRoutes = {
         data,
         method: 'post',
         path: `/points-farm/${path}`
+    }),
+
+    referrals: (data: any, path: 'remove' | 'ping-person' | '' = '') => ({
+        data,
+        method: 'post',
+        path: `/referrals/${path}`
     })
 };

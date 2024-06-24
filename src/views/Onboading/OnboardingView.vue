@@ -92,15 +92,14 @@ const insertAccount = () => {
     userMutation.mutateAsync({
         telegram_id: _store.tgUser()?.id,
         chat_id: Math.floor(Math.random() * 1282),
-        username: generateRandomString(5)
+        username: generateRandomString(5),
+        referral_code: 'C-NI4C8SDLYR-TS-1718970996490'
     } as any)
 }
 
 watch(() => userMutation.status.value, (newVal, oldValue) => {
     if (newVal == 'success') {
         _store.setIsGuestState(false)
-        console.log({ user: userMutation.data.value.data?.user })
-        _store.setUser(userMutation.data.value.data?.user)
         window.location.reload()
     }
     oldValue

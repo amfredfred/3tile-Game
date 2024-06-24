@@ -6,46 +6,41 @@ import { apiCall } from '@/configs/api';
 import { useQuery } from '@tanstack/vue-query';
 import PreloaderDialog from './OutsideBox/PreloaderDialog.vue';
 import { useMainStore } from './stores/mainstore';
+import type { IProfile } from './interfaces/IProfile';
 
-// Store instances
 const webSocketStore = useWebSocketStore();
 const mainStore = useMainStore();
-
-// Reactive states
 const isWebSocketConnected = ref(false);
 const isFullyLoaded = ref(false);
 
-// Query for user authentication
 const userResponse = useQuery({
   queryKey: ['user-authentication'],
-  queryFn: async () => await apiCall('authenticate'),
+  queryFn: async () => await apiCall<{ user: IProfile, message: string }>('authenticate'),
   retry: 2,
 });
 
-// Watcher for user authentication status
 watch(() => userResponse.status.value, (newVal) => {
   if (newVal === 'success') {
-    const userData = userResponse.data.value?.data?.user;
-    mainStore.setIsGuestState(false);
-    mainStore.setUser(userData);
+    mainStore.setIsGuestState(false)
+    // mainStore.setUser(userData);
+  } else {
+    mainStore.setIsGuestState(true)
   }
   isFullyLoaded.value = isWebSocketConnected.value;
 });
 
-// Watcher for WebSocket connection status
 watch(() => isWebSocketConnected.value, (newVal) => {
   if (newVal) {
     isFullyLoaded.value = userResponse.status.value === 'success';
   }
 });
 
-// On component mount
 onMounted(() => {
   (window as any).Telegram = {
     WebApp: {
       initDataUnsafe: {
         user: {
-          id: 845678343434,
+          id: 1234567890,
         },
       },
     },

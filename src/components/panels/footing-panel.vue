@@ -32,16 +32,14 @@ import { RouterLink } from 'vue-router';
 
 <style scoped>
 .nav-inner {
-    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3rem;
-    border-radius: 5px;
     pointer-events: all;
-
     backdrop-filter: blur(60px);
-    background: rgb(0, 0, 0);
+    background: var(--container-bg);
+    padding-block: 1rem !important;
 }
 
 
@@ -54,7 +52,6 @@ import { RouterLink } from 'vue-router';
 }  */
 
 .nav-bar {
-    padding-block: 1rem;
     user-select: none;
     pointer-events: none;
     width: 100%;
