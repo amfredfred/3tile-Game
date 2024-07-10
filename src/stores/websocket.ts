@@ -3,7 +3,7 @@ import { wsocket } from '@/configs/wsocket';
 import { defineStore } from 'pinia';
 import { useMainStore } from './mainstore';
 
-type IRoute = 'game' | 'overview' | 'balance' | 'trivia' | 'farming' | 'authenticate';
+type IRoute = 'game' | 'account-overview' | 'balance' | 'trivia' | 'farming' | 'authenticate' | 'claimable-reward-pool';
 type IAction = 'createSession' | 'addQuestionToSession' | 'addOptionToQuestion' | 'answerQuestion' | 'getActiveSession' | 'createEra' | 'activeEra' | 'harvestEra';
 
 export const useWebSocketStore = defineStore({
@@ -25,7 +25,6 @@ export const useWebSocketStore = defineStore({
         },
         connectWebSocket(path?: string, resolve?: Function, reject?: Function) {
             if (this.socketInstance && this.socketInstance.isConnected()) {
-                console.log('Already connected');
                 if (resolve) resolve(this.socketInstance);
                 return;
             }
@@ -46,30 +45,29 @@ export const useWebSocketStore = defineStore({
                 if (event.code !== 1000) {
                     this.reconnectWebSocket(resolve, reject);
                 } else if (reject) {
-                    reject(new Error('WebSocket closed with code ' + event.code));
+                    reject('WebSocket closed with code ' + event.code);
                 }
             };
 
-            this.socketInstance.socket!.onerror = (error) => {
-                console.error('WebSocket error:', error);
+            this.socketInstance.socket!.onerror = (/*error*/) => {
+                // console.error('WebSocket error:', error);
                 this.reconnectWebSocket(resolve, reject);
             };
         },
         reconnectWebSocket(resolve?: Function, reject?: Function) {
             if (this.reconnectAttempts < 5) {
-                console.log(`Attempting to reconnect (attempt ${this.reconnectAttempts + 1})...`);
                 setTimeout(() => {
                     this.reconnectAttempts++;
                     this.connectWebSocket('', resolve, reject);
                 }, 3000);
             } else {
-                console.error('Maximum reconnection attempts reached. Stopping reconnection.');
-                if (reject) reject(new Error('Maximum reconnection attempts reached'));
+                // console.error('Maximum reconnection attempts reached. Stopping reconnection.');
+                if (reject) reject('Maximum reconnection attempts reached');
             }
         },
         closeWebSocket() {
             if (this.socketInstance) {
-                this.socketInstance.removeOnmessage(); // Remove the onmessage event handler
+                this.socketInstance.removeOnmessage();
                 this.socketInstance.close();
                 this.socketInstance = null;
                 this.isConnected = false;
@@ -80,11 +78,10 @@ export const useWebSocketStore = defineStore({
             if (this.socketInstance && this.isConnected) {
                 this.socketInstance.sendMessage(route as any, data, action, callback);
             } else {
-                console.error('WebSocket connection not initialized or not connected.');
+                // console.error('WebSocket connection not initialized or not connected.');
             }
         },
         handleIncomingMessage(message: any) {
-            // Handle incoming messages here
             const _store = useMainStore()
             const data = message?.startsWith('{') ? JSON.parse(message) : message
             if (data?.farming_info) {
@@ -97,6 +94,10 @@ export const useWebSocketStore = defineStore({
                 _store.setTriviaSession(data.trivia_session);
             }
 
+            if (data?.claimable_reward_pool) {
+                _store.setRedeemableCodePool(data?.claimable_reward_pool)
+            }
+
             if ("isUser" in data) {
                 if (data?.isUser) {
                     _store.setIsGuestState(false);
@@ -104,12 +105,8 @@ export const useWebSocketStore = defineStore({
                 } else {
                     _store.setIsGuestState(true)
                 }
+
             }
-            // 
-            if (data?.error) {
-                console.log({ data })
-            }
-            // console.log(data)
         },
         setOnMessageHandler() {
             this.socketInstance!.setOnmessage((event: MessageEvent) => {

@@ -5,7 +5,7 @@
             <!-- <div class="white-bar"></div> -->
             <RouterLink active-class="active" to="/" class="nav-link">
                 <span class="pi pi-dollar "></span>
-                <strong class="link-title">Farm</strong>
+                <strong class="link-title">Earn</strong>
             </RouterLink>
             <RouterLink active-class="active" to="/tasks" class="nav-link">
                 <span class="pi pi-book "></span>
@@ -38,8 +38,9 @@ import { RouterLink } from 'vue-router';
     gap: 3rem;
     pointer-events: all;
     backdrop-filter: blur(60px);
-    background: var(--container-bg);
+    /* background: var(--container-bg); */
     padding-block: 1rem !important;
+    border-top: solid thin rgb(34, 33, 33);
 }
 
 

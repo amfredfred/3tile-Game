@@ -3,7 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 export const getBrowserLocale = (): string => navigator.language || 'en-US';
-export const formatNumber = (value: number, locale: string = getBrowserLocale(), options: Intl.NumberFormatOptions = {}): string => new Intl.NumberFormat(locale, options).format(value);
+export const formatNumber = (value: number, locale: string = getBrowserLocale(), options: Intl.NumberFormatOptions = {notation:'compact'}): string => new Intl.NumberFormat(locale, options).format(value);
 export const promise = (seconds: number = 3000) => new Promise((resolved) => setTimeout(resolved, seconds))
 
 
@@ -49,4 +49,11 @@ export
         result += characters.charAt(randomIndex);
     }
     return result;
+}
+
+
+export
+    function isMatchingCode(str: string) {
+    const pattern = /^C-[A-Z0-9]{8}-TS-\d{13}$/;
+    return pattern.test(str)
 }

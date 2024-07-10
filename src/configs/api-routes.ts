@@ -2,7 +2,8 @@ type IRouteNames =
     'users' |
     'authenticate' |
     'farm' |
-    'referrals'
+    'referrals' |
+    'code-redeem'
 
 export type IRouteMethods =
     'post' |
@@ -36,5 +37,10 @@ export const apiRoutes: IApiRoutes = {
         data,
         method: 'post',
         path: `/referrals/${path}`
+    }),
+    'code-redeem': (data: any, path: 'claim' | '' = '') => ({
+        data,
+        method: 'post',
+        path: `/code-redeem/${path}`
     })
 };

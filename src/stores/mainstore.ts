@@ -1,5 +1,6 @@
 'use strict';
 
+import type { RedeemableCodePool } from '@/interfaces';
 import type { IFarmingEra } from '@/interfaces/IFarmingEra';
 import type { ITriviaSession } from '@/interfaces/ITrivia';
 import { defineStore } from 'pinia';
@@ -31,6 +32,7 @@ interface IState {
     },
     triviaSession?: ITriviaSession
     farmingEra?: IFarmingEra | null
+    redeemableCodePool?: RedeemableCodePool
 }
 
 const getLocalStorageItem = <K extends LocalStorageKeys>(key: K): LocalStorageValues[K] | null => {
@@ -55,7 +57,8 @@ const initialState: IState = {
     overview: {
         totalScore: null
     },
-    farmingEra: null
+    farmingEra: null,
+    redeemableCodePool: null
 };
 
 export const useMainStore = defineStore({
@@ -89,6 +92,9 @@ export const useMainStore = defineStore({
         },
         setFarmingEra(farmingEra: IFarmingEra) {
             this.farmingEra = farmingEra
+        },
+        setRedeemableCodePool(pool?: RedeemableCodePool) {
+            this.redeemableCodePool = pool
         }
     },
 });

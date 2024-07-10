@@ -220,7 +220,7 @@ onMounted(() => {
 .convas_container {
     position: relative;
     width: 100%;
-    height: 100dvh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;

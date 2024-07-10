@@ -1,7 +1,7 @@
 <template>
         <div class="preloader">
             <div class="loader"></div>
-            <div class="loading-text">Loading...</div>
+            <!-- <div class="loading-text">Loading...</div> -->
         </div>
 </template>
 

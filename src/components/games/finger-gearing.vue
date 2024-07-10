@@ -1,5 +1,6 @@
 <template>
     <div id="game-container">
+        {{ nextGearChangeRPM }}
         <div class="gear-indicator">
             * <strong><span style="color: green;">{{ gears }}</span>/{{ maxGears }}</strong>
         </div>
@@ -14,9 +15,10 @@
             :needleTransitionDuration="3333" :currentValueText="`RPM - ${rpm} OF ${maxTotalRPM}`" :maxSegmentLabels="0"
             :segments="70" needleColor="#D8DEE9" />
 
-        <v-button :disabled="wh.isMoving" style="border-radius: 5px !important;"  @mousedown="startCounting" @mouseout="stopCounting"
+        <v-button :disabled="wh.isMoving" style="border-radius: 5px !important;" @mousedown="startCounting"
             :class="['farming-button', 'button-round']">
-                {{ wh.isMoving ? `Take ${points} MEP` : 'PRESSS HERE (soon)' }}
+            <!-- {{ wh.isMoving ? `Take ${points} MEP` : 'PRESSS HERE (soon)' }} -->
+            SOON
         </v-button>
 
 
@@ -50,7 +52,7 @@ const nextGearChangeRPM = ref(maxTotalRPM / 4)
 
 const wh = reactive({
     isBottomSheetVisible: false,
-    isMoving:true //false
+    isMoving:false //false
 });
 
 const speed = computed(() => {
@@ -107,7 +109,7 @@ const claimReward = () => {
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* background: var(--container-bg); */
+    background: black;
     width: 100%;
     border-radius: 20px;
     min-height: max-content;

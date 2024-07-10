@@ -1,60 +1,58 @@
 <template>
-    <home-layout>
-        <template #content>
-            <div class="frens-wrapper">
-                <v-infinite-scroll class="frens-container" :items="items" :onLoad="load">
-                    <!-- <screen-heading heading="Invite Friends" /> -->
-                    <div class="heading-container">
-                        <p>Earn rewards by inviting your friends to join us!</p>
+    <div class="frens-wrapper">
+        <v-infinite-scroll class="frens-container" :items="items" :onLoad="load">
+            <!-- <screen-heading heading="Invite Friends" /> -->
+            <v-section-headline title="INVITE YOUR FRENS" />
+            <p>Earn rewards by inviting your friends to join us!</p>
+            <div class="referral-info">
+                <div class="referral-stats">
+                    <div class="stat-block">
+                        <strong><span class="pi pi-user"></span> {{ totalReferrals }} </strong>
+                        <label> Your Frens </label>
                     </div>
-
-                    <div class="referral-info">
-                        <div class="referral-stats">
-                            <div class="stat-block">
-                                <label>REWARDS <span>{{ formatNumber(totalRewards) }}MEP</span></label>
-                            </div>
-                        </div>
-                    </div>
-                    <strong style="margin-bottom: .6rem;">YOUR FRENS ({{ totalReferrals }})</strong>
-                    <template v-for="(item, index) in (items.length ? items : dummyItems)" :key="item.id || index">
-                        <v-skeleton-loader class="fren-item" theme="dark" :loading="!item?.id"
-                            type="list-item-avatar-three-line">
-                            <v-button v-if="item" class="list-item-list">
-                                <span class="pi pi-user user-icon"></span>
-                                <div class="list-item-inner">
-                                    <div class="list-item-info">
-                                        <strong>{{ `@${item?.username}` }} -> 0.00</strong>
-                                        <small class="fren-score pi  pi-user-plus">&nbsp;332</small>
-                                    </div>
-                                    <div class="list-item-stats">
-                                        <strong>{{ formatNumber(567/*item?.points*/) }}MEP</strong>
-                                        <span class="pi  pi-box"></span>
-                                    </div>
-                                    <!-- <v-button @click="deleteDownline(index)" class="delete-button">Delete</v-button> -->
-                                </div>
-                            </v-button>
-                        </v-skeleton-loader>
-                    </template>
-                </v-infinite-scroll>
-                <div class="referral-link">
-                    <v-button class="link-stat-block">
-                        {{ totalReferrals }}/{{ maxReferrals }}
-                    </v-button>
-                    <div class="link-container">
-                        <input type="text" v-model="referralLink" readonly />
-                        <v-button @click="copyToClipboard">invite</v-button>
+                    <div class="stat-block">
+                        <strong><span class="pi pi-chart-scatter"></span> {{ formatNumber(totalRewards) }}</strong>
+                        <label> Earnings </label>
                     </div>
                 </div>
             </div>
-        </template>
-    </home-layout>
+
+            <template v-for="(item, index) in (items.length ? items : dummyItems)" :key="item.id || index">
+                <v-skeleton-loader class="fren-item" theme="dark" :loading="!item?.id"
+                    type="list-item-avatar-three-line" v-motion-slide-visible-bottom>
+                    <v-button v-if="item" class="list-item-list">
+                        <span class="pi pi-user user-icon"></span>
+                        <div class="list-item-inner">
+                            <div class="list-item-info">
+                                <strong>{{ `@${item?.username}` }} -> 0.00</strong>
+                                <small class="fren-score pi  pi-user-plus">&nbsp;332</small>
+                            </div>
+                            <div class="list-item-stats">
+                                <strong>{{ formatNumber(567/*item?.points*/) }}MEP</strong>
+                                <span class="pi  pi-box"></span>
+                            </div>
+                            <!-- <v-button @click="deleteDownline(index)" class="delete-button">Delete</v-button> -->
+                        </div>
+                    </v-button>
+                </v-skeleton-loader>
+            </template>
+        </v-infinite-scroll>
+
+
+        <div class="referral-link">
+            <FrenInviteButton />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { apiCall } from '@/configs/api';
 import type { IFrens } from '@/interfaces/IFrens';
 import type { IProfile } from '@/interfaces/IProfile';
-import { onMounted, ref } from 'vue'
+import { useQuery } from '@tanstack/vue-query';
+import { ref, watch } from 'vue'
+
+import FrenInviteButton from '@/components/FrenInviteButton.vue'
 
 const page = ref(0)
 const totalPages = ref(1)
@@ -65,55 +63,50 @@ const totalReferrals = ref(0)
 const totalRewards = ref(0)
 const maxReferrals = ref(50)
 
-async function load(metadate: any = null) {
-    if (page.value < totalPages.value) {
-        const res = await apiCall<IFrens>('referrals', '', {
-            page: page.value + 1
-        })
-        if (res.status <= 203) {
-            items.value.push(...res.data.downlines.data)
-            page.value = res?.data?.downlines?.page
-            totalPages.value = res?.data?.downlines?.totalPages
-            totalReferrals.value = res.data.downlines.total
-            totalRewards.value = 3456782 //res.data.totalRewards
-            metadate?.done?.('ok')
-        } else {
-            console.log('error')
-        }
-    } else {
-        metadate?.end()
-    }
+const ine = ref(0)
+setInterval(() => ine.value++, 1000)
+
+const frensQuery = useQuery({
+    queryKey: ['frens'],
+    queryFn: async (page) => await apiCall<IFrens>('referrals', '', { page }),
+})
+
+function load() {
+    if (page.value >= totalPages.value) return
+    frensQuery.refetch(page.value + 1 as any)
 }
 
 function formatNumber(num: number): string {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function copyToClipboard() {
-    navigator.clipboard.writeText(referralLink.value).then(() => {
-        alert('Referral link copied to clipboard!');
-    });
-}
-
-async function deleteDownline(index: number) {
-    const downlineId = items.value[index].id;
-    try {
-        const res = await apiCall('referrals', 'remove', { downlineId });
-        if (res.status <= 203) {
-            items.value.splice(index, 1);
-            totalReferrals.value--;
-            alert('Downline deleted successfully!');
-        } else {
-            console.log('Error deleting downline');
-        }
-    } catch (error) {
-        console.log('Error deleting downline', error);
+const props = defineProps({
+    isInViewPort: {
+        type: Boolean,
+        required: true
     }
-}
-
-onMounted(() => {
-    load()
 })
+
+watch(() => [props.isInViewPort], ([current]) => {
+    if (current) {
+        console.log('Activation turned on');
+        load()
+    } else {
+        console.log('Activation turned off');
+    }
+})
+
+watch([frensQuery.data.value?.data], ([frens]) => {
+    console.log('FETCHED FRENS', { frens })
+
+    if (typeof frens == 'object') {
+        items.value.push(...frens.downlines.data)
+        page.value = frens.downlines?.page
+        totalPages.value = frens.downlines?.totalPages
+        totalReferrals.value = frens.downlines.total
+    }
+})
+
 </script>
 
 <style scoped>
@@ -123,6 +116,14 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     height: 100%;
+    text-align: center;
+
+    height: 100%;
+    overflow: hidden auto;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    padding-bottom: 1rem;
+    background: rgb(0, 0, 0);
 }
 
 .frens-container {
@@ -130,7 +131,6 @@ onMounted(() => {
     height: 100%;
     border-radius: 10px;
     overflow: hidden auto;
-    padding-inline: 1rem;
 }
 
 .frens-container::-webkit-scrollbar {
@@ -150,61 +150,19 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
     width: 100%;
 }
 
-.referral-link {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    gap: 1rem;
-    padding-block: .5rem;
-}
-
-.link-stat-block {
-    background: transparent;
-    padding: 0;
-    margin: 0;
-    background-color: inherit;
-    border: none;
-    padding: 10px 5px;
-    padding-left: 1rem;
-    border-radius: 0;
-}
-
-
-.link-container button {
-    padding: 10px 20px;
-    border: none;
-    background-color: inherit;
-    color: white;
-    cursor: pointer;
-    text-transform: uppercase;
-    padding-right: 1rem;
-}
-
-
-.link-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-}
-
-.link-container input {
-    all: unset;
-    flex-grow: 1;
-}
 
 .referral-stats {
     display: flex;
-    gap: 1rem;
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
     flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .stat-block {
@@ -212,21 +170,38 @@ onMounted(() => {
     padding: 1rem;
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    box-shadow: 0 0 1px rgb(17, 17, 17) inset;
+    text-align: left;
+}
+
+.referral-link {
+    display: flex;
+    width: 100%;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
+
+
+
 
 .stat-block label {
     display: block;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
 }
 
 .stat-block strong {
     font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.stat-block .pi {
+    font-size: 1.3rem;
 }
 
 
@@ -280,7 +255,7 @@ onMounted(() => {
     align-items: center;
     gap: 5px;
     font-weight: bold;
-    
+
 }
 
 .list-item-stats strong {

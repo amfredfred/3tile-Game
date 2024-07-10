@@ -13,16 +13,13 @@
 import { computed, onMounted } from 'vue';
 import { useMainStore } from '@/stores/mainstore';
 import { formatNumber } from '@/utils';
-import IconCoin from '@/assets/icons/coins.png';
 import { useWebSocketStore } from '@/stores/websocket';
 
 const _store = useMainStore();
 const points = computed(() => _store?.overview?.totalScore);
 const socket = useWebSocketStore()
+onMounted(() => socket.sendMessage('account-overview'));
 
-onMounted(() => {
-    socket.sendMessage('overview')
-});
 </script>
 
 <style scoped>
@@ -50,8 +47,8 @@ onMounted(() => {
     flex-grow: 1;
     border-radius: 0;
     /* background: var(--container-bg); */
-    background:transparent;
-    border:none;
+    background: transparent;
+    border: none;
     height: 50px;
     display: flex;
     align-items: center;
@@ -59,7 +56,7 @@ onMounted(() => {
     justify-content: center;
     isolation: isolate;
     overflow: hidden;
-    padding:0
+    padding: 0
 }
 
 .earned-points-container::after {
@@ -72,15 +69,13 @@ onMounted(() => {
     height: 110%;
     aspect-ratio: 1;
     z-index: -1;
-    /* background: rgba(0, 0, 0); */
     backdrop-filter: blur(10px);
-    /* background: red; */
     overflow: hidden;
 }
 
 .points {
     font-weight: 900;
-    font-size: 2.1rem;
+    font-size: 1.6rem;
     height: 100%;
     color: white;
     white-space: nowrap;

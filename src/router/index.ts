@@ -1,11 +1,6 @@
 import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import { useMainStore } from '@/stores/mainstore'
-import RushDotgameView from '@/views/Games/RushDot/RushDotGameView.vue'
 import HomeView from '@/views/HomeView.vue'
-import TaskView from '@/views/Tasks/TasksView.vue'
-import FrensView from '@/views/Frens/FrensView.vue'
-import RewardsView from '@/views/Rewards/RewardsView.vue'
-// import NotFound404Page from '@/views/Errors/NotFound404Page.vue'
 import OnboardingView from '@/views/Onboading/OnboardingView.vue'
 
 const router = createRouter({
@@ -20,70 +15,11 @@ const router = createRouter({
       }
     },
     {
-      path: '/',
-      name: 'farm',
-      component: HomeView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/farm',
-      name: 'farm-home',
-      component: HomeView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/tasks',
-      name: 'tasks',
-      component: TaskView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/frens',
-      name: 'frens',
-      component: FrensView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/rewards',
-      name: 'rewards',
-      component: RewardsView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    {
-      path: '/rush-dot-game',
-      name: 'rush-dot-game-page',
-      component: RushDotgameView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    // 
-    {
-      path: '/farm',
-      name: 'farm-page',
-      component: HomeView,
-      meta: {
-        requires_auth: true
-      }
-    },
-    // Add a wildcard route for 404 Not Found
-    // {
-    //   path: '/:catchAll(.*)',
-    //   component: NotFound404Page
-    // }
+      path: '/:catchAll(.*)',
+      component: HomeView
+    }
   ]
 })
-
 
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   try {

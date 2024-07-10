@@ -1,6 +1,5 @@
 <template>
     <div class="onboarding-container">
-        <vue-particles id="tsparticles" class="particles" :options="ParticleConst" />
         <swiper @slideChange="onSlideChange" :options="swiperOptions" class="swiper-container" :modules="modules"
             effect='cube'>
             <!-- First Slide: Project Details -->
@@ -12,7 +11,7 @@
                     </p>
                     <img :src="WelcomeTipIcon" alt="" class="image-small">
                 </div>
-                <r-button value="OKAY =>" />
+                <r-button value="NEXT =>" />
             </swiper-slide>
 
             <!-- Second Slide: Making the Most of It -->
@@ -24,7 +23,7 @@
                     </p>
                     <img :src="GroupOfPeopleIcon" alt="" class="image-small">
                 </div>
-                <r-button value="LET`s GOIN" />
+                <r-button value="NEXT" />
             </swiper-slide>
 
             <!-- Third Slide: Community and More -->
@@ -50,7 +49,6 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { EffectCube, Pagination } from 'swiper/modules';
 import { ref, watch } from 'vue'
-import { ParticleConst } from '@/configs/particles-options';
 import GroupOfPeopleIcon from '@/assets/icons/alarm-clock.png'
 import WelcomeTipIcon from '@/assets/icons/welcome-tip.png'
 import { useMainStore } from '@/stores/mainstore';

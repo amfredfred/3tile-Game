@@ -38,17 +38,16 @@ class WebSocketClient {
         }
 
         const url = `${this.host}?x-t-id=${xtelegramid}&path=${path ?? ''}`;
-        this.socket = new WebSocket(url);
+
+        this!.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
-            // console.log('WebSocket connection established.');
             clearInterval(this.reconnectInterval as ReturnType<typeof setInterval>);
             this.reconnectAttempts = 0;
             if (callback) callback();
         };
 
         this.socket.onclose = (event) => {
-            console.log('WebSocket connection closed.');
             if (event.code !== 1000) {
                 this.reconnect();
             }

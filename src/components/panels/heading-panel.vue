@@ -1,6 +1,6 @@
 <template>
     <nav class="nav-bar">
-        <div v-if="!_store?.user">
+        <div v-if="_store?.is_guest">
             Authenticate
         </div>
         <div v-else class="nav-inner">
