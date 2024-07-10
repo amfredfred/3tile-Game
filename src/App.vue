@@ -7,6 +7,10 @@ import PreloaderDialog from './OutsideBox/PreloaderDialog.vue';
 import { useMainStore } from './stores/mainstore';
 import type { IProfile } from './interfaces/IProfile';
 import MaintenanceView from '@/views/Feedback/MaintenanceView.vue';
+import OnboardingView from '@/views/Onboading/OnboardingView.vue'
+
+
+import WebApp from '@twa-dev/sdk';
 
 const webSocketStore = useWebSocketStore();
 const mainStore = useMainStore();
@@ -23,6 +27,7 @@ const CreateConnection = async () => {
     }
     mainStore.setIsGuestState(false);
     webSocketStore.initializeWebSocket().then(() => {
+      WebApp.ready()
       isFullyLoaded.value = true;
       isError.value = false;
     }).catch(() => {
@@ -50,7 +55,7 @@ onMounted(async () => {
     WebApp: {
       initDataUnsafe: {
         user: {
-          id: 12345678909232,
+          id: 123456789092332,
         },
       },
     },
@@ -63,7 +68,8 @@ onMounted(async () => {
 
 <template>
   <div class="main-container">
-    <div class="contents-wrapper">
+    <OnboardingView v-if="isUserNotFound" />
+    <div v-else class="contents-wrapper">
       <MaintenanceView @reload="reload" v-if="isError" :isReloading="isRealoading" />
       <div class="main-views" v-else>
         <PreloaderDialog v-if="!isFullyLoaded" />

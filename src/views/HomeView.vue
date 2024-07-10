@@ -1,6 +1,8 @@
 <template>
   <home-layout>
     <template #content>
+
+
       <swiper class="main-swiper" :options="swiperOptions" :slides-per-view="1" :space-between="15" @swiper="onSwiper"
         effect="cube" :modules="modules" @slideChange="onSlideChange">
         <swiper-slide>
@@ -38,6 +40,8 @@ import type { Swiper as SwiperInstance } from 'swiper/types';
 import NavigationBar from '@/components/NavigationBar.vue'
 import FrensView from '@/views/Frens/FrensView.vue';
 import RewardsView from '@/views/Rewards/RewardsView.vue';
+
+
 import { EffectCube } from 'swiper/modules';
 
 const modules = [EffectCube]

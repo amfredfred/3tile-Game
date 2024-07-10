@@ -7,7 +7,7 @@
                 <div class="slider-item">
                     <screen-heading heading="HELLO, FRED - welcome" />
                     <p style="text-align: center; max-width: 90%; font-size: 13px;">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        <!-- Lorem Ipsum is simply dummy text of the printing and typesetting industry. -->
                     </p>
                     <img :src="WelcomeTipIcon" alt="" class="image-small">
                 </div>
@@ -19,7 +19,7 @@
                 <div class="slider-item">
                     <screen-heading heading="fun frens are fun" />
                     <p style="text-align: center; max-width: 90%; font-size: 13px;">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        <!-- Lorem Ipsum is simply dummy text of the printing and typesetting industry. -->
                     </p>
                     <img :src="GroupOfPeopleIcon" alt="" class="image-small">
                 </div>
@@ -48,23 +48,15 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { EffectCube, Pagination } from 'swiper/modules';
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import GroupOfPeopleIcon from '@/assets/icons/alarm-clock.png'
 import WelcomeTipIcon from '@/assets/icons/welcome-tip.png'
 import { useMainStore } from '@/stores/mainstore';
-import { useMutation } from '@tanstack/vue-query';
-import { apiCall } from '@/configs/api';
-import { generateRandomString } from '@/utils';
 
 const modules = [EffectCube, Pagination]
 const intervalBeforeJumpingIn = ref<any>(null)
 const timeLeftBeforeJumingIn = ref(2)
 const _store = useMainStore()
-
-const userMutation = useMutation({
-    mutationKey: ['user-registerd'],
-    mutationFn: async (data) => await apiCall('authenticate', '/', data)
-})
 
 const swiperOptions = {
     direction: 'horizontal',
@@ -78,7 +70,7 @@ const onSlideChange = (event: any) => {
             if (timeLeftBeforeJumingIn.value <= 0) {
                 if (intervalBeforeJumpingIn.value) clearInterval(intervalBeforeJumpingIn.value)
                 timeLeftBeforeJumingIn.value = 0
-                insertAccount()
+                _store.setIsGuestState(false)
             }
         }, 1000)
         return
@@ -86,22 +78,6 @@ const onSlideChange = (event: any) => {
     timeLeftBeforeJumingIn.value = 2
 }
 
-const insertAccount = () => {
-    userMutation.mutateAsync({
-        telegram_id: _store.tgUser()?.id,
-        chat_id: Math.floor(Math.random() * 1282),
-        username: generateRandomString(5),
-        referral_code: 'C-NI4C8SDLYR-TS-1718970996490'
-    } as any)
-}
-
-watch(() => userMutation.status.value, (newVal, oldValue) => {
-    if (newVal == 'success') {
-        _store.setIsGuestState(false)
-        window.location.reload()
-    }
-    oldValue
-}) 
 </script>
 
 <style scoped>
