@@ -1,6 +1,6 @@
 <template>
     <div class="frens-wrapper">
-        <v-infinite-scroll class="frens-container" :items="items" :onLoad="load">
+        <v-infinite-scroll class="frens-container" :items="items" :loading="true" :empty="true" @load="load">
             <!-- <screen-heading heading="Invite Friends" /> -->
             <v-section-headline title="INVITE YOUR FRENS" />
             <p>Earn rewards by inviting your friends to join us!</p>
@@ -17,20 +17,27 @@
                 </div>
             </div>
 
-            <template v-for="(item, index) in (items.length ? items : dummyItems)" :key="item.id || index">
+            <div v-if="!items.length" style="padding: 2rem;">
+                Nobody Here Yet<br />
+                <small>Lots of benefits when you invite your frens.</small>
+            </div>
+
+            <template v-else v-for="(item, index) in (items)" :key="item.id || index">
                 <v-skeleton-loader class="fren-item" theme="dark" :loading="!item?.id"
                     type="list-item-avatar-three-line" v-motion-slide-visible-bottom>
                     <v-button v-if="item" class="list-item-list">
                         <span class="pi pi-user user-icon"></span>
                         <div class="list-item-inner">
                             <div class="list-item-info">
-                                <strong>{{ `@${item?.username}` }} -> 0.00</strong>
+                                <strong>
+                                    {{ `@${item?.username}` }} -> {{ formatNumber(Number(item?.wallet?.balance)) }}{{
+                                    item?.wallet?.currency }}</strong>
                                 <small class="fren-score pi  pi-user-plus">&nbsp;332</small>
                             </div>
-                            <div class="list-item-stats">
-                                <strong>{{ formatNumber(567/*item?.points*/) }}MEP</strong>
-                                <span class="pi  pi-box"></span>
-                            </div>
+                            <!-- <div class="list-item-stats">
+                                <strong>{{ formatNumber(0/*item?.points*/) }}MEP</strong>
+                                <span class="pi pi-gift"></span>
+                            </div> -->
                             <!-- <v-button @click="deleteDownline(index)" class="delete-button">Delete</v-button> -->
                         </div>
                     </v-button>
@@ -38,9 +45,8 @@
             </template>
         </v-infinite-scroll>
 
-
         <div class="referral-link">
-            <FrenInviteButton />
+            <FrenInviteButton :referralLink="referralLink" :slots-remaining="referralSlots" :filled-slots="totalReferrals"  />
         </div>
     </div>
 </template>
@@ -48,32 +54,40 @@
 <script setup lang="ts">
 import { apiCall } from '@/configs/api';
 import type { IFrens } from '@/interfaces/IFrens';
-import type { IProfile } from '@/interfaces/IProfile';
-import { useQuery } from '@tanstack/vue-query';
 import { ref, watch } from 'vue'
 
 import FrenInviteButton from '@/components/FrenInviteButton.vue'
-
+import { useMainStore } from '@/stores/mainstore';
+const _store = useMainStore()
 const page = ref(0)
 const totalPages = ref(1)
 const items = ref<IFrens['downlines']['data']>([])
-const dummyItems = ref<IProfile[]>(Array.from({ length: 5 }).fill({} as IProfile) as IProfile[])
-const referralLink = ref("https://yourwebsite.com/referral?code=YOURCODE")
 const totalReferrals = ref(0)
 const totalRewards = ref(0)
-const maxReferrals = ref(50)
+const referralLink = ref<any>(null)
+const referralSlots = ref(0)
 
 const ine = ref(0)
 setInterval(() => ine.value++, 1000)
 
-const frensQuery = useQuery({
-    queryKey: ['frens'],
-    queryFn: async (page) => await apiCall<IFrens>('referrals', '', { page }),
-})
-
-function load() {
+async function load(meta: any) {
     if (page.value >= totalPages.value) return
-    frensQuery.refetch(page.value + 1 as any)
+    const frensRequest = await apiCall<IFrens>('referrals', '', { page })
+    const frens = frensRequest.data
+    if (frensRequest.status == 200) {
+        if (Array.isArray(frens.downlines.data)) {
+            console.log(frens.downlines.data)
+            items.value.push(...frens.downlines.data)
+        }
+        referralLink.value = frens.referral_code
+        referralSlots.value = Number(frens.referral_slots ?? 0)
+        page.value = frens.downlines.page || 1;
+        totalPages.value = frens.downlines.totalPages || 1;
+        totalReferrals.value = frens.downlines.total || 0;
+    } else {
+        console.log('not laoded')
+    }
+    meta?.done('ok')
 }
 
 function formatNumber(num: number): string {
@@ -89,21 +103,11 @@ const props = defineProps({
 
 watch(() => [props.isInViewPort], ([current]) => {
     if (current) {
+        console.log(_store.admin_settings)
         console.log('Activation turned on');
-        load()
+        load('')
     } else {
         console.log('Activation turned off');
-    }
-})
-
-watch([frensQuery.data.value?.data], ([frens]) => {
-    console.log('FETCHED FRENS', { frens })
-
-    if (typeof frens == 'object') {
-        items.value.push(...frens.downlines.data)
-        page.value = frens.downlines?.page
-        totalPages.value = frens.downlines?.totalPages
-        totalReferrals.value = frens.downlines.total
     }
 })
 
@@ -131,6 +135,7 @@ watch([frensQuery.data.value?.data], ([frens]) => {
     height: 100%;
     border-radius: 10px;
     overflow: hidden auto;
+    padding-inline: 1rem;
 }
 
 .frens-container::-webkit-scrollbar {
@@ -162,7 +167,7 @@ watch([frensQuery.data.value?.data], ([frens]) => {
     overflow-x: auto;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 1rem;
+    margin-block: 1rem;
 }
 
 .stat-block {
@@ -183,9 +188,6 @@ watch([frensQuery.data.value?.data], ([frens]) => {
     justify-content: center;
 }
 
-
-
-
 .stat-block label {
     display: block;
     font-weight: bold;
@@ -203,8 +205,6 @@ watch([frensQuery.data.value?.data], ([frens]) => {
 .stat-block .pi {
     font-size: 1.3rem;
 }
-
-
 
 .list-item-list {
     display: flex;

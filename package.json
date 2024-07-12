@@ -29,6 +29,7 @@
     "swiper": "^11.1.4",
     "tsparticles": "^3.4.0",
     "vue": "^3.4.21",
+    "vue-clipboard2": "^0.3.3",
     "vue-confetti": "^2.3.0",
     "vue-confetti-explosion": "^1.0.2",
     "vue-number-animation": "^2.0.2",

@@ -9,4 +9,6 @@ export interface IFrens {
         totalPages: number
     },
     upline: IProfile
+    referral_code?: string
+    referral_slots?: number
 }

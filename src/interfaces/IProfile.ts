@@ -1,4 +1,12 @@
-'use strict'
+export type UserWallet = {
+    balance: string;
+    created_at: string;
+    currency: string;
+    id: string;
+    name: string | null;
+    telegram_id: string;
+    updated_at: string;
+}
 
 export interface IProfile {
     id: number
@@ -14,4 +22,6 @@ export interface IProfile {
     website: string
     created_at: string
     updated_at: string
+    is_new: boolean,
+    wallet?: UserWallet
 }

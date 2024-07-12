@@ -1,12 +1,12 @@
 <template>
-    <v-button class="earned-points-container">
+    <div class="earned-points-container">
         <!-- <img :src="IconCoin" alt="" class="icon"> -->
         <div class="points-container">
             <v-progress-circular size="30" v-if="!points" style="margin-left:auto" color="info" indeterminate />
             <span class="points" v-else>{{ formatNumber(Number(points || 0)) }}</span>
-            <strong class="account-denomination">MEP</strong>
+            <strong class="account-denomination"> {{ currency }}</strong>
         </div>
-    </v-button>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +17,8 @@ import { useWebSocketStore } from '@/stores/websocket';
 
 const _store = useMainStore();
 const points = computed(() => _store?.overview?.totalScore);
+const currency = computed(() => _store?.admin_settings?.GLOBAL_CONFIG?.app_short_name)
+console.log(_store?.admin_settings)
 const socket = useWebSocketStore()
 onMounted(() => socket.sendMessage('account-overview'));
 
@@ -29,7 +31,7 @@ onMounted(() => socket.sendMessage('account-overview'));
     justify-content: center;
     width: 100%;
     /* padding-inline: 1rem; */
-    gap: .5rem;
+    /* gap: .5rem; */
     font-family: Lato-Bold;
 }
 
@@ -69,7 +71,6 @@ onMounted(() => socket.sendMessage('account-overview'));
     height: 110%;
     aspect-ratio: 1;
     z-index: -1;
-    backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
@@ -81,14 +82,13 @@ onMounted(() => socket.sendMessage('account-overview'));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 60%;
     margin-left: auto;
     text-shadow: 0 0 3px pink;
 }
 
 .account-denomination {
     font-weight: 900;
-    font-size: 2.1rem;
+        font-size: 1.6rem;
     color: rgb(239, 251, 179);
 }
 </style>

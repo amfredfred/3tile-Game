@@ -19,7 +19,6 @@ import Particles from "@tsparticles/vue3";
 import { loadFull } from "tsparticles";
 import { MotionPlugin } from '@vueuse/motion'
 
-
 // Import Main App and Router
 import App from '@/App.vue';
 import router from '@/router';

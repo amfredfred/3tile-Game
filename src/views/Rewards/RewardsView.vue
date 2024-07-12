@@ -87,8 +87,6 @@ watch(() => [props.isInViewPort], ([current]) => {
     background: rgb(0, 0, 0);
 }
 
-
-
 .tasks-wrapper::-webkit-scrollbar {
     display: none;
 }

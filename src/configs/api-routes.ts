@@ -3,7 +3,9 @@ type IRouteNames =
     'authenticate' |
     'farm' |
     'referrals' |
-    'code-redeem'
+    'code-redeem' |
+    'update-profile' |
+    'administration'
 
 export type IRouteMethods =
     'post' |
@@ -19,6 +21,17 @@ export const apiRoutes: IApiRoutes = {
     users: () => ({
         method: 'get',
         path: `/users`,
+    }),
+
+    administration: () => ({
+        method: 'post',
+        path: `/administration/public-configs`,
+    }),
+
+    'update-profile': (data: any) => ({
+        data,
+        method: 'post',
+        path: `/users/update-profile`,
     }),
 
     authenticate: (data: any) => ({

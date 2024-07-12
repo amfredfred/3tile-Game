@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useWebSocketStore } from './stores/websocket';
 import { apiCall } from '@/configs/api';
 import PreloaderDialog from './OutsideBox/PreloaderDialog.vue';
@@ -11,6 +11,7 @@ import OnboardingView from '@/views/Onboading/OnboardingView.vue'
 
 
 import WebApp from '@twa-dev/sdk';
+import type { AdminSettings } from './interfaces';
 
 const webSocketStore = useWebSocketStore();
 const mainStore = useMainStore();
@@ -20,29 +21,45 @@ const isRealoading = ref(false)
 const isUserNotFound = ref(false)
 
 const CreateConnection = async () => {
+  WebApp.setHeaderColor('secondary_bg_color')
+  WebApp.ready()
+
   try {
-    const userResponse = await apiCall<{ user: IProfile, message: string }>('authenticate');
-    if (userResponse.status !== 200) {
-      throw new Error(userResponse?.data?.message);
+    const [configsResponse, userResponse] = await Promise.allSettled([
+      apiCall<{ admin_settings: AdminSettings, message: string }>('administration'),
+      apiCall<{ user: IProfile, message: string }>('authenticate')
+    ])
+
+    if (configsResponse.status === 'fulfilled') { 
+      mainStore.setAdminSettings(configsResponse.value.data.admin_settings)
+    }else {
+      throw new Error(configsResponse.reason);
     }
-    mainStore.setIsGuestState(false);
-    webSocketStore.initializeWebSocket().then(() => {
-      WebApp.ready()
-      isFullyLoaded.value = true;
-      isError.value = false;
-    }).catch(() => {
-      throw new Error("Websocket Error")
-    });
+    if (userResponse.status === 'fulfilled') {
+      mainStore.setIsNew(userResponse.value.data.user.is_new)
+      mainStore.setIsGuestState(false);
+    } else {
+      throw new Error(userResponse.reason);
+    }
+    await webSocketStore.initializeWebSocket()
+    isFullyLoaded.value = true;
+    isError.value = false;
+    isUserNotFound.value = false
   } catch (error) {
     if ((error as any)?.response?.status == 401) {
+      isError.value = false;
+    } else if ((error as any)?.response?.status == 404) {
       isUserNotFound.value = true
-    } else {
+    }
+    else {
       isError.value = true;
     }
     isFullyLoaded.value = false;
     mainStore.setIsGuestState(true);
   }
 };
+
+const isNewUser = computed(() => mainStore.is_new)
 
 const reload = async () => {
   isRealoading.value = true
@@ -55,7 +72,7 @@ onMounted(async () => {
     WebApp: {
       initDataUnsafe: {
         user: {
-          id: 123456789092332,
+          id: 1497831921,
         },
       },
     },
@@ -65,15 +82,17 @@ onMounted(async () => {
 });
 </script>
 
-
 <template>
   <div class="main-container">
-    <OnboardingView v-if="isUserNotFound" />
+    <span v-if="isUserNotFound" style="position: fixed; transform: translate(-50%, -50%);left: 50%; top: 50%;">
+      USER NOT FOUND
+    </span>
+    <OnboardingView v-motion-slide-visible-once-top v-else-if="isNewUser" />
     <div v-else class="contents-wrapper">
       <MaintenanceView @reload="reload" v-if="isError" :isReloading="isRealoading" />
       <div class="main-views" v-else>
         <PreloaderDialog v-if="!isFullyLoaded" />
-        <RouterView v-else />
+        <RouterView v-else v-motion-slide-left />
       </div>
     </div>
   </div>

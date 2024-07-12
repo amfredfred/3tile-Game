@@ -52,6 +52,7 @@ import { ref } from 'vue'
 import GroupOfPeopleIcon from '@/assets/icons/alarm-clock.png'
 import WelcomeTipIcon from '@/assets/icons/welcome-tip.png'
 import { useMainStore } from '@/stores/mainstore';
+import { apiCall } from '@/configs/api';
 
 const modules = [EffectCube, Pagination]
 const intervalBeforeJumpingIn = ref<any>(null)
@@ -62,15 +63,19 @@ const swiperOptions = {
     direction: 'horizontal',
 }
 
-const onSlideChange = (event: any) => {
+const onSlideChange = async (event: any) => {
     if (intervalBeforeJumpingIn.value) clearInterval(intervalBeforeJumpingIn.value)
     if (event?.isEnd) {
-        intervalBeforeJumpingIn.value = setInterval(() => {
+        intervalBeforeJumpingIn.value = setInterval(async () => {
             timeLeftBeforeJumingIn.value--
             if (timeLeftBeforeJumingIn.value <= 0) {
                 if (intervalBeforeJumpingIn.value) clearInterval(intervalBeforeJumpingIn.value)
                 timeLeftBeforeJumingIn.value = 0
-                _store.setIsGuestState(false)
+                const response = await apiCall('update-profile', '', { is_new: false })
+                if (response.status == 200)
+                    _store.setIsNew(false)
+                else
+                    _store.setServerError(true)
             }
         }, 1000)
         return
@@ -99,7 +104,7 @@ const onSlideChange = (event: any) => {
     padding: 2rem;
     gap: .6rem;
     flex-grow: 1;
-    background: linear-gradient(to top, transparent, rgba(4, 81, 88, 0.69));
+    /* background: linear-gradient(to top, transparent, rgba(4, 81, 88, 0.69)); */
 }
 
 .slider-item {

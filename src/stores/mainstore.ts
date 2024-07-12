@@ -1,6 +1,6 @@
 'use strict';
 
-import type { RedeemableCodePool } from '@/interfaces';
+import type { AdminSettings, RedeemableCodePool } from '@/interfaces';
 import type { IFarmingEra } from '@/interfaces/IFarmingEra';
 import type { ITriviaSession } from '@/interfaces/ITrivia';
 import { defineStore } from 'pinia';
@@ -26,13 +26,15 @@ interface IState {
     show_auth_modal: boolean;
     user: any | null;
     internet_ok: boolean;
-
     overview?: {
         totalScore: number | null
     },
     triviaSession?: ITriviaSession
     farmingEra?: IFarmingEra | null
-    redeemableCodePool?: RedeemableCodePool
+    redeemableCodePool?: RedeemableCodePool,
+    is_new: boolean
+    is_server_error: boolean
+    admin_settings: AdminSettings | null
 }
 
 const getLocalStorageItem = <K extends LocalStorageKeys>(key: K): LocalStorageValues[K] | null => {
@@ -58,7 +60,10 @@ const initialState: IState = {
         totalScore: null
     },
     farmingEra: null,
-    redeemableCodePool: null
+    redeemableCodePool: null,
+    is_new: false,
+    is_server_error: false,
+    admin_settings: null
 };
 
 export const useMainStore = defineStore({
@@ -95,6 +100,16 @@ export const useMainStore = defineStore({
         },
         setRedeemableCodePool(pool?: RedeemableCodePool) {
             this.redeemableCodePool = pool
+        },
+        setIsNew(is_new: boolean) {
+            this.is_new = is_new
+        },
+        setServerError(is_server_error: boolean) {
+            this.is_server_error = is_server_error
+        },
+        setAdminSettings(settings: AdminSettings) {
+            console.log({ settings })
+            this.admin_settings = settings
         }
     },
 });
