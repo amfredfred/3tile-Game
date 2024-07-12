@@ -81,6 +81,7 @@ interface ReferralConfig {
 interface GlobalConfig {
     app_name: string,
     app_short_name: string,
+    app_currency_code: string
 }
 
 export interface AdminSettings {

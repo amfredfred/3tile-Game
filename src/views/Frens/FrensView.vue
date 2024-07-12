@@ -30,8 +30,9 @@
                         <div class="list-item-inner">
                             <div class="list-item-info">
                                 <strong>
-                                    {{ `@${item?.username}` }} -> {{ formatNumber(Number(item?.wallet?.balance)) }}{{
-                                    item?.wallet?.currency }}</strong>
+                                    {{ `@${item?.referral_code}` }} -> {{ formatNumber(Number(item.wallet_balance))
+                                    }}{{
+                                        _store.admin_settings?.GLOBAL_CONFIG.app_short_name }}</strong>
                                 <small class="fren-score pi  pi-user-plus">&nbsp;332</small>
                             </div>
                             <!-- <div class="list-item-stats">
@@ -46,7 +47,8 @@
         </v-infinite-scroll>
 
         <div class="referral-link">
-            <FrenInviteButton :referralLink="referralLink" :slots-remaining="referralSlots" :filled-slots="totalReferrals"  />
+            <FrenInviteButton :referralLink="referralLink" :slots-remaining="referralSlots"
+                :filled-slots="totalReferrals" />
         </div>
     </div>
 </template>
@@ -61,7 +63,7 @@ import { useMainStore } from '@/stores/mainstore';
 const _store = useMainStore()
 const page = ref(0)
 const totalPages = ref(1)
-const items = ref<IFrens['downlines']['data']>([])
+const items = ref<IFrens['downlines']['frens']>([])
 const totalReferrals = ref(0)
 const totalRewards = ref(0)
 const referralLink = ref<any>(null)
@@ -75,9 +77,9 @@ async function load(meta: any) {
     const frensRequest = await apiCall<IFrens>('referrals', '', { page })
     const frens = frensRequest.data
     if (frensRequest.status == 200) {
-        if (Array.isArray(frens.downlines.data)) {
-            console.log(frens.downlines.data)
-            items.value.push(...frens.downlines.data)
+        if (Array.isArray(frens.downlines.frens)) {
+            console.log(frens.downlines.frens)
+            items.value.push(...frens.downlines.frens)
         }
         referralLink.value = frens.referral_code
         referralSlots.value = Number(frens.referral_slots ?? 0)

@@ -72,7 +72,10 @@ export const useMainStore = defineStore({
         ...initialState
     }),
     getters: {
-        tgUser: () => tgUser
+        tgUser: () => tgUser,
+        currency() {
+            this.admin_settings?.GLOBAL_CONFIG.app_short_name
+        }
     },
     actions: {
         setIsGuestState(state: boolean) {
