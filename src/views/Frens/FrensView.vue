@@ -6,14 +6,17 @@
             <p>Earn rewards by inviting your friends to join us!</p>
             <div class="referral-info">
                 <div class="referral-stats">
-                    <div class="stat-block">
+                    <strong style="margin-right: auto;">
+                        Your frens ({{ totalReferrals }})
+                    </strong>
+                    <!-- <div class="stat-block">
                         <strong><span class="pi pi-user"></span> {{ totalReferrals }} </strong>
                         <label> Your Frens </label>
                     </div>
                     <div class="stat-block">
                         <strong><span class="pi pi-chart-scatter"></span> {{ formatNumber(totalRewards) }}</strong>
                         <label> Earnings </label>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -23,22 +26,21 @@
             </div>
 
             <template v-else v-for="(item, index) in (items)" :key="item.id || index">
-                <v-skeleton-loader class="fren-item" theme="dark" :loading="!item?.id"
+                <v-skeleton-loader class="fren-item" theme="dark" :loading="!item?.referral_code"
                     type="list-item-avatar-three-line" v-motion-slide-visible-bottom>
                     <v-button v-if="item" class="list-item-list">
                         <span class="pi pi-user user-icon"></span>
                         <div class="list-item-inner">
                             <div class="list-item-info">
                                 <strong>
-                                    {{ `@${item?.referral_code}` }} -> {{ formatNumber(Number(item.wallet_balance))
-                                    }}{{
-                                        _store.admin_settings?.GLOBAL_CONFIG.app_short_name }}</strong>
-                                <small class="fren-score pi  pi-user-plus">&nbsp;332</small>
+                                    {{ `${item?.referral_code}` }} -> {{ formatNumber(Number(item.wallet_balance)) }}{{
+                                        _store.currency }}</strong>
+                                <small class="fren-score pi  pi-user-plus">&nbsp;{{ item.downlines_count }}</small>
                             </div>
-                            <!-- <div class="list-item-stats">
-                                <strong>{{ formatNumber(0/*item?.points*/) }}MEP</strong>
+                            <div class="list-item-stats">
+                                <strong>{{ formatNumber(item.rewards_to_upline) }}{{ _store.currency }}</strong>
                                 <span class="pi pi-gift"></span>
-                            </div> -->
+                            </div>
                             <!-- <v-button @click="deleteDownline(index)" class="delete-button">Delete</v-button> -->
                         </div>
                     </v-button>
@@ -105,9 +107,8 @@ const props = defineProps({
 
 watch(() => [props.isInViewPort], ([current]) => {
     if (current) {
-        console.log(_store.admin_settings)
-        console.log('Activation turned on');
         load('')
+        console.log('Activation turned on');
     } else {
         console.log('Activation turned off');
     }
@@ -122,7 +123,7 @@ watch(() => [props.isInViewPort], ([current]) => {
     align-items: center;
     justify-content: center;
     height: 100%;
-    text-align: center;
+    /* text-align: center; */
 
     height: 100%;
     overflow: hidden auto;
@@ -214,10 +215,11 @@ watch(() => [props.isInViewPort], ([current]) => {
     justify-content: space-between;
     padding: 10px;
     background: var(--container-bg);
-    border-radius: 8px;
+    border-radius: 10px;
     width: 100%;
     margin-bottom: 10px;
     border: none;
+    padding-right: 1.4rem;
 }
 
 .user-icon {
@@ -244,11 +246,11 @@ watch(() => [props.isInViewPort], ([current]) => {
 }
 
 .list-item-info strong {
-    font-size: 14px;
+    font-size: 11px;
 }
 
 .fren-score {
-    font-size: 12px;
+    font-size: 11px;
     color: #bbb;
 }
 

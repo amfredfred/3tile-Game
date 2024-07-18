@@ -4,7 +4,7 @@
         <div class="nav-inner">
             <v-button :class="['nav-link', activeIndex == 0 ? 'active' : '']" @click="goToSlide(0)" aria-label="Rush">
                 <span class="pi pi-dollar"></span>
-                <strong class="link-title">Rush</strong>
+                <strong class="link-title">Redeem</strong>
             </v-button>
             <v-button :class="['nav-link', activeIndex == 1 ? 'active' : '']" @click="goToSlide(1)" aria-label="Frens">
                 <span class="pi pi-users"></span>

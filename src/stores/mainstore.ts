@@ -73,9 +73,9 @@ export const useMainStore = defineStore({
     }),
     getters: {
         tgUser: () => tgUser,
-        currency() {
-            this.admin_settings?.GLOBAL_CONFIG.app_short_name
-        }
+        currency: (state) => state.admin_settings?.GLOBAL_CONFIG?.app_currency_code,
+        appName: (state) => state.admin_settings?.GLOBAL_CONFIG?.app_name,
+        refSettings: (state) => state.admin_settings?.REFERRAL_CONFIG
     },
     actions: {
         setIsGuestState(state: boolean) {
